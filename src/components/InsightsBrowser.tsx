@@ -1,20 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import type { PhotoName } from "@/config/photos";
 import { ArticleCard } from "./cards";
 
-export type InsightItem = {
-  href: string;
-  image: PhotoName;
-  imageAlt: string;
-  topic: string;
-  title: string;
-  excerpt: string;
-  meta: string;
-};
+export type InsightItem = { href: string; topic: string; title: string; excerpt: string; meta: string; cta: string };
 
-/** Insight cards with topic filter chips. */
+/** Insight cards with topic tabs. */
 export function InsightsBrowser({
   items,
   topics,
@@ -26,26 +17,31 @@ export function InsightsBrowser({
 }) {
   const [active, setActive] = useState<string | null>(null);
   const visible = items.filter((item) => !active || item.topic === active);
-  const chip = (selected: boolean) =>
-    `rounded-full px-4 py-2 text-sm font-bold transition-colors ${
-      selected ? "bg-brand-blue text-white" : "bg-white text-ink ring-1 ring-line hover:ring-brand-blue"
+  const usedTopics = topics.filter((topic) => items.some((item) => item.topic === topic));
+  const tab = (selected: boolean) =>
+    `-mb-px shrink-0 border-b-2 py-3 text-[0.9375rem] font-semibold transition-colors ${
+      selected ? "border-navy-900 text-ink" : "border-transparent text-ink-soft hover:text-ink"
     }`;
 
   return (
     <div>
-      <div role="group" aria-label={labels.filter} className="flex flex-wrap gap-2">
-        <button type="button" aria-pressed={!active} onClick={() => setActive(null)} className={chip(!active)}>
+      <div
+        role="group"
+        aria-label={labels.filter}
+        className="flex gap-6 overflow-x-auto border-b border-line max-sm:[mask-image:linear-gradient(to_right,#000_85%,transparent)]"
+      >
+        <button type="button" aria-pressed={!active} onClick={() => setActive(null)} className={tab(!active)}>
           {labels.all}
         </button>
-        {topics.map((topic) => (
-          <button key={topic} type="button" aria-pressed={active === topic} onClick={() => setActive(topic)} className={chip(active === topic)}>
+        {usedTopics.map((topic) => (
+          <button key={topic} type="button" aria-pressed={active === topic} onClick={() => setActive(topic)} className={tab(active === topic)}>
             {topic}
           </button>
         ))}
       </div>
       <div aria-live="polite">
         {visible.length > 0 ? (
-          <ul className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-12 grid gap-x-8 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
             {visible.map((item) => (
               <li key={item.href}>
                 <ArticleCard {...item} />
@@ -53,7 +49,7 @@ export function InsightsBrowser({
             ))}
           </ul>
         ) : (
-          <p className="mt-10 rounded-3xl border border-dashed border-line bg-white p-10 text-center text-ink-soft">{labels.empty}</p>
+          <p className="mt-12 border border-line p-10 text-ink-soft">{labels.empty}</p>
         )}
       </div>
     </div>

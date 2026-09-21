@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { FeatureCard } from "@/components/cards";
+import { CardGrid, DetailCard } from "@/components/cards";
 import { CtaBanner } from "@/components/CtaBanner";
-import type { IconName } from "@/components/Icon";
+import { Figure } from "@/components/Figure";
 import { JsonLd } from "@/components/JsonLd";
 import { PageHero } from "@/components/PageHero";
-import { Photo } from "@/components/Photo";
-import { ButtonLink, CheckList, Container, SectionHeading } from "@/components/ui";
+import { CheckList, Container, Section, SectionHeading } from "@/components/ui";
 import { getDictionary } from "@/i18n";
 import { isLocale } from "@/i18n/config";
+import type { PhotoName } from "@/config/photos";
 import { localePath } from "@/config/routes";
 import { pageMetadata } from "@/lib/seo";
 import { webPageSchema } from "@/lib/structured-data";
@@ -20,24 +20,25 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/path-of-
   return pageMetadata({ locale, path: "/path-of-wisdom", title: wisdom.metaTitle, description: wisdom.metaDescription });
 }
 
-const themeIcons: IconName[] = ["compass", "book", "tree", "messages", "eye", "network", "leaf"];
+/** Photos shown in a programme's modal, by position in `wisdom.programmes.items` (1 Wisdom Retreats). */
+const programmeImages: Partial<Record<number, PhotoName>> = { 1: "fire-circle" };
 
 export default async function PathOfWisdomPage({ params }: PageProps<"/[locale]/path-of-wisdom">) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const dict = getDictionary(locale);
   const t = dict.wisdom;
+  const labels = { moreLabel: dict.common.readMore, closeLabel: dict.common.close };
   const path = (p: string) => localePath(locale, p);
 
   return (
     <>
       <JsonLd data={webPageSchema({ locale, path: "/path-of-wisdom", name: t.metaTitle, description: t.metaDescription })} />
       <PageHero
-        eyebrow={t.hero.eyebrow}
         title={t.hero.title}
         lead={t.hero.lead}
-        photo="boardroom"
-        photoAlt={dict.photos.boardroom}
+        photo="bonfire"
+        photoAlt={dict.photos.bonfire}
         crumbs={[
           { name: dict.nav.home, href: path("") },
           { name: dict.nav.pathOfWisdom, href: path("/path-of-wisdom") },
@@ -45,79 +46,88 @@ export default async function PathOfWisdomPage({ params }: PageProps<"/[locale]/
         crumbsLabel={dict.nav.breadcrumb}
       />
 
-      <section className="py-24 sm:py-28">
-        <Container className="grid items-center gap-14 lg:grid-cols-[1.2fr_1fr] lg:gap-20">
-          <div>
+      {/* Intro */}
+      <Section tone="white">
+        <Container className="grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-6">
             <SectionHeading title={t.intro.title} />
-            <p className="reveal mt-6 text-lg leading-relaxed text-ink-soft">{t.intro.text}</p>
+            <p className="reveal mt-6 text-lead text-ink-soft">{t.intro.text}</p>
           </div>
-          <div className="reveal relative mx-auto w-full max-w-md">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-[2.5rem] shadow-2xl shadow-brand-blue/15">
-              <Photo name="strategy" alt={dict.photos.strategy} />
+          <div className="reveal lg:col-span-5 lg:col-start-8">
+            <Figure name="salon" ratio="4/3" alt={dict.photos.salon} sizes="(min-width: 1280px) 32rem, (min-width: 1024px) 40vw, 90vw" />
+          </div>
+        </Container>
+      </Section>
+
+      {/* Themes: the heading takes the first cell, so heading and seven cards fill two rows of four */}
+      <Section tone="ivory">
+        <Container>
+          <CardGrid className="sm:grid-cols-2 lg:grid-cols-4">
+            <div className="bg-ivory px-0 py-6 sm:p-7 lg:p-8 lg:[&_h2]:text-[clamp(2rem,1rem+1.5vw,2.5rem)]">
+              <SectionHeading title={t.themes.title} />
             </div>
-          </div>
-        </Container>
-      </section>
-
-      <section className="bg-sand py-24 sm:py-28">
-        <Container>
-          <SectionHeading eyebrow={t.themes.eyebrow} title={t.themes.title} />
-          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {t.themes.items.map((item, i) => (
-              <FeatureCard key={item.title} icon={themeIcons[i]} title={item.title} text={item.text} tone="sand" />
+              <DetailCard
+                key={item.title}
+                index={i}
+                title={item.title}
+                teaser={item.text}
+                body={<p className="text-lead">{item.text}</p>}
+                tone="ivory"
+                {...labels}
+              />
             ))}
+          </CardGrid>
+        </Container>
+      </Section>
+
+      {/* Programmes */}
+      <Section tone="white">
+        <Container className="grid gap-10 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:sticky lg:top-28 lg:col-span-4 lg:self-start">
+            <SectionHeading title={t.programmes.title} />
           </div>
+          <CardGrid className="sm:grid-cols-2 lg:col-span-8">
+            {t.programmes.items.map((item, i) => {
+              const image = programmeImages[i];
+              return (
+                <DetailCard
+                  key={item.title}
+                  title={item.title}
+                  teaser={item.text}
+                  body={<p className="text-lead">{item.text}</p>}
+                  image={image}
+                  imageAlt={image ? dict.photos[image] : undefined}
+                  tone="white"
+                  className={i === t.programmes.items.length - 1 ? "sm:col-span-2" : ""}
+                  {...labels}
+                />
+              );
+            })}
+          </CardGrid>
         </Container>
-      </section>
+      </Section>
 
-      <section className="py-24 sm:py-28">
-        <Container>
-          <SectionHeading eyebrow={t.programmes.eyebrow} title={t.programmes.title} />
-          <ul className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {t.programmes.items.map((item) => (
-              <li key={item.title} className="reveal flex flex-col rounded-3xl border border-line bg-white p-7 transition-shadow hover:shadow-xl hover:shadow-brand-blue/10">
-                <span className="w-fit rounded-full bg-brand-blue-50 px-3 py-1 text-xs font-bold text-brand-blue">{item.format}</span>
-                <h3 className="mt-5 font-display text-2xl font-bold text-ink">{item.title}</h3>
-                <p className="mt-3 leading-relaxed text-ink-soft">{item.text}</p>
-              </li>
-            ))}
-          </ul>
-        </Container>
-      </section>
-
-      <section className="bg-mist py-24 sm:py-28">
+      {/* Who it is for and what changes */}
+      <Section tone="ivory">
         <Container className="grid gap-12 lg:grid-cols-2">
           {[t.audience, t.outcomes].map((block) => (
-            <div key={block.title} className="reveal rounded-[2rem] bg-white p-8 sm:p-10">
-              <h2 className="font-display text-3xl font-bold text-ink">{block.title}</h2>
+            <div key={block.title} className="reveal border-t border-line pt-6">
+              <h2 className="font-display text-[clamp(1.75rem,1.4rem+1vw,2.5rem)] font-semibold leading-tight text-ink">{block.title}</h2>
               <CheckList items={block.items} className="mt-8" />
             </div>
           ))}
         </Container>
-      </section>
-
-      <section className="py-24 sm:py-28">
-        <Container className="max-w-3xl text-center">
-          <h2 className="reveal font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">{t.next.title}</h2>
-          <p className="reveal mt-6 text-lg leading-relaxed text-ink-soft">{t.next.text}</p>
-          <div className="mt-9 flex justify-center">
-            <ButtonLink href={path("/path-of-action")} variant="blue">
-              {t.next.link}
-            </ButtonLink>
-          </div>
-        </Container>
-      </section>
+      </Section>
 
       <CtaBanner
-        eyebrow={dict.ctaBand.eyebrow}
         title={dict.ctaBand.title}
         text={dict.ctaBand.text}
+        tone="white"
         actions={[
+          { label: t.next.link, href: path("/path-of-action") },
           { label: dict.cta.conversation, href: `${path("/contact")}?topic=wisdom` },
-          { label: dict.cta.join, href: `${path("/contact")}?topic=membership` },
         ]}
-        photo="partnership"
-        photoAlt={dict.photos.partnership}
       />
     </>
   );

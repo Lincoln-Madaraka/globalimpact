@@ -73,7 +73,7 @@ export function Header({
   const brand = (
     <Link href={homeHref} className="flex items-center gap-3" onClick={closeAll}>
       <span className="grid size-10 place-items-center rounded-full bg-white">
-        <Image src="/brand/logo-mark.webp" alt="" width={30} height={30} preload />
+        <Image unoptimized src="/brand/logo-mark.webp" alt="" width={30} height={30} preload />
       </span>
       <span className="leading-none text-white">
         <span className="block text-[1.0625rem] font-bold tracking-tight">Global Impact</span>

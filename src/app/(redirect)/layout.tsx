@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 export default function RedirectLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body style={{ margin: 0, fontFamily: "system-ui, sans-serif", background: "#061640", color: "#fff" }}>{children}</body>
+      <body style={{ margin: 0, fontFamily: "system-ui, sans-serif", background: "#060d1f", color: "#fff" }}>{children}</body>
     </html>
   );
 }

@@ -5,8 +5,8 @@ const nextConfig: NextConfig = {
   output: "export",
   // /en/about/ -> /en/about/index.html, which every static host serves correctly.
   trailingSlash: true,
-  // Photos are pre-optimized by `npm run images`.
-  images: { unoptimized: true },
+  // Photos are pre-optimised by `npm run images`; the loader picks the 640px copy for small screens.
+  images: { loader: "custom", loaderFile: "./src/lib/image-loader.ts" },
   experimental: {
     globalNotFound: true,
   },

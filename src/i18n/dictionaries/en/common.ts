@@ -74,20 +74,33 @@ export const common = {
   founder: "Founder",
   team: "Core team",
   advisors: "Advisors",
+  expertAdvisors: "Expert advisors",
   email: "Email",
+  close: "Close",
+  pauseEarth: "Pause the spinning Earth",
+  seeInWhatWeDo: "See it on What we do",
+  seeFullStory: "See the full story",
 };
 
 export const photos = {
   consultation: "Two professionals reviewing documents together across a desk",
   boardroom: "A group gathered around a long table in dialogue, seen from above",
   strategy: "A strategist mapping connections between ideas on a glass wall",
-  community: "Sketches of health, education, skills and career growth around a notebook",
-  office: "A warm, light-filled office interior",
-  contact: "Envelopes and map pins floating above a desk",
   handshake: "Two partners shaking hands, seen from above",
   partnership: "Two partners shaking hands across a low table",
-  compliance: "An open hand presenting a glowing digital checklist",
+  "desk-globe": "A desk globe in warm evening light, turned towards Asia and the Indian Ocean",
+  hands: "Many hands of different skin tones resting together on a globe",
   earth: "The Earth seen from space with Africa at its centre (NASA, Apollo 17)",
+  bonfire: "A fire burning on the rocks beside a lake at dusk",
+  "kogi-elders": "Two Kogi elders in traditional white dress at a gathering",
+  gathering: "Elders dressed in white standing together on coastal rocks",
+  "fire-circle": "People seated around a fire inside a tent",
+  "womens-circle": "Women seated together in a circle in a thatched hall",
+  elder: "An Indigenous leader wearing a feather headdress",
+  salon: "Participants listening at a Wisdom Salon in the Co-Creation Loft",
+  rita: "Rita of the Huni Kuin people in traditional dress and face paint",
+  "woven-hands": "Joined hands over woven Huni Kuin textiles",
+  "rice-farmers": "Farmers planting rice by hand in flooded fields in Java",
 };
 
 export const offices = {

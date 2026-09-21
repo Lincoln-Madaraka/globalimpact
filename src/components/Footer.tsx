@@ -51,7 +51,7 @@ export function Footer({
           <p className="max-w-[16ch] font-display text-h2 text-white">{dict.footer.closing}</p>
           <Link href={localePath(locale)} className="inline-flex shrink-0 items-center gap-3">
             <span className="grid size-12 place-items-center rounded-full bg-white">
-              <Image src="/brand/logo-mark.webp" alt="" width={36} height={36} />
+              <Image unoptimized src="/brand/logo-mark.webp" alt="" width={36} height={36} />
             </span>
             <span className="leading-none">
               <span className="block text-lg font-bold tracking-tight">Global Impact</span>
@@ -60,8 +60,8 @@ export function Footer({
           </Link>
         </div>
 
-        <div className="grid gap-12 py-14 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8 lg:py-16">
-          <div className="lg:col-span-4">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-12 py-14 lg:grid-cols-12 lg:gap-8 lg:py-16">
+          <div className="col-span-2 lg:col-span-4">
             <p className="max-w-sm leading-relaxed text-white/72">{dict.footer.tagline}</p>
             {socials.length > 0 && (
               <ul className="mt-6 flex gap-5">
@@ -78,7 +78,7 @@ export function Footer({
           </div>
           {linkList("footer-explore", dict.footer.explore, explore)}
           {linkList("footer-work", dict.footer.work, work)}
-          <div className="lg:col-span-3 lg:col-start-10">
+          <div className="col-span-2 lg:col-span-3 lg:col-start-10">
             <h2 className={heading}>{dict.footer.offices}</h2>
             <ul className="mt-5 space-y-5">
               {offices.map(({ label, office }) => (
@@ -102,7 +102,6 @@ export function Footer({
           <p>
             © {new Date().getFullYear()} {site.name}. {dict.footer.rights}
           </p>
-          <p>{offices.map(({ office }) => office.city || office.country).join(" · ")}</p>
         </Container>
       </div>
     </footer>

@@ -2,6 +2,10 @@ export const africa = {
   metaTitle: "Africa",
   metaDescription:
     "GIA's African hub in Kenya: working with African leaders, communities and entrepreneurs on Indigenous knowledge, conservation, regenerative economies, leadership, impact investment and youth entrepreneurship.",
+  map: {
+    label: "Map of Africa with every country shown in the colours of its flag. Kenya, GIA's African hub, is outlined.",
+    caption: "Kenya: GIA's African hub",
+  },
   hero: {
     eyebrow: "Africa",
     title: "Africa is shaping what comes next",

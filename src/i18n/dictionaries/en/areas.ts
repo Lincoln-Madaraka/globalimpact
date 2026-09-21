@@ -1,5 +1,3 @@
-import type { PhotoName } from "@/config/photos";
-
 type Area = {
   id: string;
   title: string;
@@ -8,7 +6,6 @@ type Area = {
   who: string;
   does: string[];
   outcome: string;
-  image: PhotoName;
 };
 
 /** The eight areas of work on the "What we do" page (id = page anchor). */
@@ -25,7 +22,6 @@ export const areas: Area[] = [
       "Convenes Mothers to the World, a journey for women leading in finance, philanthropy, business and policy",
     ],
     outcome: "Leaders who decide with a longer time horizon, a wider view of consequences and a clearer sense of responsibility.",
-    image: "office",
   },
   {
     id: "indigenous-knowledge",
@@ -39,7 +35,6 @@ export const areas: Area[] = [
       "Supports Indigenous-led initiatives with fair recognition and benefit",
     ],
     outcome: "Partnerships built on consent and respect, in which traditional knowledge shapes decisions and communities share in the value they help create.",
-    image: "handshake",
   },
   {
     id: "impact-investment",
@@ -53,7 +48,6 @@ export const areas: Area[] = [
       "Designs collaborative capital mechanisms that pool resources around shared goals",
     ],
     outcome: "Capital deployed with more insight and less risk, into projects that are wanted, well governed and built to last.",
-    image: "consultation",
   },
   {
     id: "systemic-change",
@@ -67,7 +61,6 @@ export const areas: Area[] = [
       "Brings actors together around specific shifts in finance, economy and governance",
     ],
     outcome: "Shared frameworks and standards that make long-term, regenerative decisions easier to take and to measure.",
-    image: "strategy",
   },
   {
     id: "research-and-knowledge",
@@ -81,7 +74,6 @@ export const areas: Area[] = [
       "Documents what projects learn, so it can be shared and reused",
     ],
     outcome: "Evidence and ideas that decision-makers can act on, with knowledge properly recognised and credited.",
-    image: "community",
   },
   {
     id: "convening",
@@ -95,7 +87,6 @@ export const areas: Area[] = [
       "Brings people together at Mycelium Dinners to build trust across networks",
     ],
     outcome: "Trusted relationships and shared commitments that grow into partnerships, investments and projects.",
-    image: "boardroom",
   },
   {
     id: "community-led-impact",
@@ -109,7 +100,6 @@ export const areas: Area[] = [
       "Tracks progress together with the communities involved",
     ],
     outcome: "Healthier ecosystems and stronger local economies, owned and shaped by the people who depend on them.",
-    image: "partnership",
   },
   {
     id: "africa-initiatives",
@@ -123,6 +113,5 @@ export const areas: Area[] = [
       "Develops initiatives in conservation, youth entrepreneurship and impact investment",
     ],
     outcome: "African-led initiatives with the partners and capital to grow, and African perspectives at the centre of global conversations.",
-    image: "earth",
   },
 ];

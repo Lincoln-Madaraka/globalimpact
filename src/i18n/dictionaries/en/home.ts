@@ -68,6 +68,7 @@ export const home = {
     places: ["New York", "Kenya", "Brazilian Amazon", "Indonesia"],
   },
   africa: {
+    mapLabel: "The map of Africa drawn in swirling red, amber and green lines",
     eyebrow: "Africa",
     title: "Africa is not a place that needs saving. It is where much of the future is being built.",
     text: "Africa holds deep knowledge traditions, extraordinary ecosystems and the world's youngest population. From our hub in Kenya, we work with African leaders, communities and entrepreneurs as partners in shaping what comes next.",

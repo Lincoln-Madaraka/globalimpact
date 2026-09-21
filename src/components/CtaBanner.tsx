@@ -1,53 +1,39 @@
-import type { PhotoName } from "@/config/photos";
-import { site } from "@/config/site";
 import type { IconName } from "./Icon";
-import { MotionBackdrop } from "./MotionBackdrop";
-import { PhotoCircle } from "./PhotoCircle";
-import { ButtonLink, Container, Eyebrow, type ButtonVariant } from "./ui";
+import { ButtonLink, Container, type ButtonVariant } from "./ui";
 
 export type CtaAction = { label: string; href: string; variant?: ButtonVariant; icon?: IconName };
 
-/** Closing call to collaborate, shown at the bottom of most pages. */
+/** Closing call to collaborate: statement on the left, actions on the right. */
 export function CtaBanner({
-  eyebrow,
   title,
   text,
   actions,
-  photo = "earth",
-  photoAlt,
+  tone = "ivory",
 }: {
-  eyebrow: string;
   title: string;
   text: string;
   actions: CtaAction[];
-  photo?: PhotoName;
-  photoAlt: string;
+  tone?: "ivory" | "white";
 }) {
   return (
-    <section className="py-20 sm:py-24">
-      <Container>
-        <div className="reveal relative isolate overflow-hidden rounded-[2.5rem] px-6 py-14 text-white sm:px-12 lg:px-16 lg:py-16">
-          <MotionBackdrop />
-          <div className="grid items-center gap-12 lg:grid-cols-[1.5fr_1fr]">
-            <div>
-              <Eyebrow tone="light">{eyebrow}</Eyebrow>
-              <h2 className="mt-5 font-display text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl lg:leading-[1.1]">{title}</h2>
-              <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/80">{text}</p>
-              <div className="mt-9 flex flex-wrap gap-3">
-                {actions.map((action, i) => (
-                  <ButtonLink key={action.label} href={action.href} variant={action.variant ?? (i === 0 ? "primary" : "outlineLight")} icon={action.icon}>
-                    {action.label}
-                  </ButtonLink>
-                ))}
-              </div>
-              <p className="mt-6 text-sm text-white/65">
-                <a href={`mailto:${site.email}`} className="hover:text-white hover:underline">
-                  {site.email}
-                </a>
-              </p>
-            </div>
-            <PhotoCircle photos={[photo]} alts={[photoAlt]} className="mx-auto hidden w-full max-w-xs lg:block" />
-          </div>
+    <section className={`border-t border-line py-16 sm:py-20 lg:py-24 ${tone === "ivory" ? "bg-ivory" : "bg-white"}`}>
+      <Container className="reveal grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-8">
+        <div className="lg:col-span-7">
+          <h2 className="max-w-[20ch] font-display text-h2 text-ink">{title}</h2>
+          <p className="mt-5 max-w-[40rem] text-lead text-ink-soft">{text}</p>
+        </div>
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:col-span-4 lg:col-start-9 lg:flex-col">
+          {actions.map((action, i) => (
+            <ButtonLink
+              key={action.label}
+              href={action.href}
+              variant={action.variant ?? (i === 0 ? "primary" : "outlineDark")}
+              icon={action.icon}
+              className="w-full sm:w-auto lg:w-full"
+            >
+              {action.label}
+            </ButtonLink>
+          ))}
         </div>
       </Container>
     </section>

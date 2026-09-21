@@ -4,11 +4,10 @@ import { CtaBanner } from "@/components/CtaBanner";
 import { InsightsBrowser, type InsightItem } from "@/components/InsightsBrowser";
 import { JsonLd } from "@/components/JsonLd";
 import { PageHero } from "@/components/PageHero";
-import { Container, SectionHeading } from "@/components/ui";
+import { Container, Section } from "@/components/ui";
 import { getDictionary } from "@/i18n";
 import { isLocale } from "@/i18n/config";
 import { localePath } from "@/config/routes";
-import { formatDate } from "@/lib/format";
 import { pageMetadata } from "@/lib/seo";
 import { webPageSchema } from "@/lib/structured-data";
 
@@ -30,21 +29,19 @@ export default async function InsightsPage({ params }: PageProps<"/[locale]/insi
   const items: InsightItem[] = [
     ...t.articles.map((article) => ({
       href: path(`/insights/${article.slug}`),
-      image: article.image,
-      imageAlt: dict.photos[article.image],
       topic: article.topic,
       title: article.title,
       excerpt: article.excerpt,
-      meta: `${formatDate(locale, article.date)} · ${article.minutes} ${dict.common.minRead}`,
+      meta: `${article.minutes}\u00a0${dict.common.minRead}`,
+      cta: dict.common.readArticle,
     })),
     ...dict.impact.projects.map((project) => ({
       href: `${path("/impact")}#${project.id}`,
-      image: project.image,
-      imageAlt: dict.photos[project.image],
       topic: caseStudyTopic,
       title: project.title,
       excerpt: project.challenge,
       meta: project.place,
+      cta: dict.common.readArticle,
     })),
   ];
 
@@ -52,11 +49,10 @@ export default async function InsightsPage({ params }: PageProps<"/[locale]/insi
     <>
       <JsonLd data={webPageSchema({ type: "CollectionPage", locale, path: "/insights", name: t.metaTitle, description: t.metaDescription })} />
       <PageHero
-        eyebrow={t.hero.eyebrow}
         title={t.hero.title}
         lead={t.hero.lead}
-        photo="community"
-        photoAlt={dict.photos.community}
+        photo="boardroom"
+        photoAlt={dict.photos.boardroom}
         crumbs={[
           { name: dict.nav.home, href: path("") },
           { name: dict.nav.insights, href: path("/insights") },
@@ -64,22 +60,18 @@ export default async function InsightsPage({ params }: PageProps<"/[locale]/insi
         crumbsLabel={dict.nav.breadcrumb}
       />
 
-      <section className="bg-mist py-24 sm:py-28">
+      <Section tone="white">
         <Container>
-          <SectionHeading eyebrow={t.latest} title={t.hero.title} />
-          <div className="mt-10">
-            <InsightsBrowser items={items} topics={t.topics} labels={{ all: dict.common.allTopics, filter: dict.common.filterTopics, empty: t.empty }} />
-          </div>
+          {/* Visually hidden so the cards' h3 headings follow an h2. */}
+          <h2 className="sr-only">{t.latest}</h2>
+          <InsightsBrowser items={items} topics={t.topics} labels={{ all: dict.common.allTopics, filter: dict.common.filterTopics, empty: t.empty }} />
         </Container>
-      </section>
+      </Section>
 
       <CtaBanner
-        eyebrow={t.hero.eyebrow}
         title={t.contribute.title}
         text={t.contribute.text}
         actions={[{ label: t.contribute.cta, href: `${path("/contact")}?topic=research` }]}
-        photo="strategy"
-        photoAlt={dict.photos.strategy}
       />
     </>
   );

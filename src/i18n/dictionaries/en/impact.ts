@@ -6,7 +6,7 @@ type Project = {
   place: string;
   focus: string;
   status: string;
-  image: PhotoName;
+  image?: PhotoName;
   challenge: string;
   approach: string;
   partnership: string;
@@ -25,8 +25,9 @@ export const impact = {
   },
   method: {
     eyebrow: "How we report",
-    title: "Challenge → Approach → Partnership → Action → Impact",
-    text: "Every project is told the same way, so partners can see what was done, why, with whom and what changed. Where results are still emerging, we say so.",
+    title: "Every project, told the same way",
+    steps: ["Challenge", "Approach", "Partnership", "Action", "Impact"],
+    text: "So partners can see what was done, why, with whom and what changed. Where results are still emerging, we say so.",
   },
   projects: [
     {
@@ -35,7 +36,7 @@ export const impact = {
       place: "Jordão, Acre · Brazilian Amazon",
       focus: "Indigenous women's leadership · Conservation",
       status: "Ongoing",
-      image: "community",
+      image: "rita",
       challenge:
         "In the remote Jordão region of Acre, Huni Kuin women face barriers to education and economic independence, limited protection from domestic violence, and growing pressure on the forest their community depends on.",
       approach:
@@ -57,7 +58,7 @@ export const impact = {
       place: "Java, Indonesia",
       focus: "Regenerative agriculture · Soil health",
       status: "In development",
-      image: "compliance",
+      image: "rice-farmers",
       challenge:
         "Dependence on chemical fertilisers degrades soil, contaminates water and squeezes farmers' incomes.",
       approach:
@@ -78,7 +79,6 @@ export const impact = {
       place: "Indonesia",
       focus: "Indigenous innovation · Fair value",
       status: "In development",
-      image: "consultation",
       challenge:
         "Indigenous inventors create valuable solutions but rarely have the means to formalise them, reach markets or earn a fair return.",
       approach:

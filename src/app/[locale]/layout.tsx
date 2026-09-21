@@ -21,7 +21,7 @@ export function generateStaticParams() {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#0038a5",
+  themeColor: "#0a1a3a",
 };
 
 export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Promise<Metadata> {
@@ -77,7 +77,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
       <body className="flex min-h-screen flex-col">
         <a
           href="#main"
-          className="sr-only z-[60] rounded-full bg-white px-5 py-3 font-bold text-brand-blue shadow-lg focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+          className="sr-only z-[60] bg-white px-5 py-3 font-semibold text-navy-900 focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
         >
           {nav.skip}
         </a>

@@ -9,7 +9,7 @@ export type Article = {
   excerpt: string;
   date: string; // ISO date
   minutes: number;
-  image: PhotoName;
+  image: PhotoName; // social preview image only
   body: Block[];
 };
 
@@ -47,10 +47,10 @@ export const insights = {
       topic: "Perspectives",
       title: "Why wisdom must become action",
       excerpt:
-        "There is no shortage of insight about the state of the world. The gap is between what we know and how we act.",
+        "Knowing more has not been enough. The real work is closing the distance between what we understand and what we do.",
       date: "2026-09-21",
       minutes: 4,
-      image: "strategy",
+      image: "bonfire",
       body: [
         { type: "p", text: "There is no shortage of insight about the state of the world. Reports, summits and pledges have multiplied. Yet ecosystems continue to decline, inequality persists and many economies still reward extraction over care. The gap is not only one of knowledge. It is the gap between what we know and how we act." },
         { type: "h2", text: "Two kinds of failure" },

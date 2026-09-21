@@ -12,7 +12,19 @@ npm run dev      # http://localhost:3000, reloads automatically on changes
 npm run build    # static site written to /out
 npm start        # serve /out locally to check the production build
 npm run lint
+npm run images   # re-optimise photos from /photos (see Photos below)
+npm run flags    # copy African flags from flag-icons into public/flags
 ```
+
+## Previewing the real speed
+
+`npm run dev` compiles each page the first time you open it, so the first visit to every page is slow. That is only the development server. To see how fast the real site is, build it and serve the result:
+
+```bash
+npm run build && npm start
+```
+
+The built site is plain static HTML, CSS and JavaScript, so pages open instantly.
 
 ## Pages
 
@@ -48,9 +60,17 @@ Page titles and meta descriptions sit next to each page's copy (`metaTitle`, `me
 
 1. Put the original photos in `/photos`.
 2. Map each file to a name in `scripts/optimize-images.mjs`. Name photos by what they show, e.g. `"my-photo.jpg": "boardroom"`.
-3. Run `npm run images`. This writes optimised WebP files to `public/images/` and square crops for the social preview images to `src/assets/og/`.
+3. Run `npm run images`. This writes optimised WebP files to `public/images/` and 440×630 crops for the social preview images to `src/assets/og/`.
 
-The Earth image is *The Blue Marble* (NASA / Apollo 17), which is in the public domain.
+The flags on the Africa page come from `flag-icons`. After changing the countries in `src/config/africa-countries.ts`, run `npm run flags` to copy the matching flags into `public/flags/`.
+
+## Image credits and sources
+
+- **Spinning Earth textures:** NASA Earth Observatory, Blue Marble Next Generation. Public domain; NASA asks for credit.
+- **Earth photo:** *The Blue Marble*, NASA / Apollo 17. Public domain.
+- **Photos and portraits:** from GIA's current website and the Wisdom Age Foundation. Rights for reuse still need to be confirmed.
+- **Flags:** [flag-icons](https://github.com/lipis/flag-icons), MIT licence.
+- **Africa map geography:** [Natural Earth](https://www.naturalearthdata.com/) (public domain), via the [world-atlas](https://github.com/topojson/world-atlas) package.
 
 ## SEO
 
@@ -58,7 +78,7 @@ Every page has:
 
 - its own title, description and canonical URL
 - Open Graph and Twitter tags
-- a generated 1200×630 link-preview image (`opengraph-image.tsx`, rendered by `src/lib/og.tsx`)
+- a 1200×630 link-preview image, generated at build time by `src/lib/og.tsx` (served from `/og/`)
 
 The site also has:
 

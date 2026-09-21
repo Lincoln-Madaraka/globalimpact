@@ -6,6 +6,7 @@ const ratios = {
   "3/2": "aspect-[3/2]",
   "4/3": "aspect-[4/3]",
   "1/1": "aspect-square",
+  hero: "aspect-[4/3] lg:aspect-[4/5]",
 };
 
 /** A rectangular photo frame. `zoom` scales the photo slightly when a parent `.group` is hovered. */

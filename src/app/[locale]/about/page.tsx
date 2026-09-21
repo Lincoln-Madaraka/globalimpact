@@ -1,21 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { FeatureCard, OfficeCard, PersonCard } from "@/components/cards";
+import { CardGrid, DetailCard, PortraitCard } from "@/components/cards";
 import { CtaBanner } from "@/components/CtaBanner";
-import type { IconName } from "@/components/Icon";
 import { JsonLd } from "@/components/JsonLd";
-import { MotionBackdrop } from "@/components/MotionBackdrop";
 import { PageHero } from "@/components/PageHero";
-import { Photo } from "@/components/Photo";
-import { PhotoCircle } from "@/components/PhotoCircle";
 import { Steps } from "@/components/Steps";
-import { Container, Eyebrow, SectionHeading } from "@/components/ui";
+import { Container, Section, SectionHeading } from "@/components/ui";
 import { getDictionary } from "@/i18n";
 import { isLocale } from "@/i18n/config";
-import { flowIcons } from "@/config/icons";
-import { advisors, founder, team } from "@/config/people";
+import { advisors, expertAdvisors, founder, team } from "@/config/people";
 import { localePath } from "@/config/routes";
-import { officePlace, site } from "@/config/site";
 import { pageMetadata } from "@/lib/seo";
 import { webPageSchema } from "@/lib/structured-data";
 
@@ -26,7 +20,8 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/about">)
   return pageMetadata({ locale, path: "/about", title: about.metaTitle, description: about.metaDescription });
 }
 
-const principleIcons: IconName[] = ["network", "book", "clock", "target", "leaf", "users"];
+
+const groupHeading = "border-t border-line pt-4 font-display text-xl font-semibold text-ink";
 
 export default async function AboutPage({ params }: PageProps<"/[locale]/about">) {
   const { locale } = await params;
@@ -34,16 +29,17 @@ export default async function AboutPage({ params }: PageProps<"/[locale]/about">
   const dict = getDictionary(locale);
   const t = dict.about;
   const path = (p: string) => localePath(locale, p);
+  const close = dict.common.close;
 
   return (
     <>
       <JsonLd data={webPageSchema({ type: "AboutPage", locale, path: "/about", name: t.metaTitle, description: t.metaDescription })} />
       <PageHero
-        eyebrow={t.hero.eyebrow}
         title={t.hero.title}
         lead={t.hero.lead}
-        photo="partnership"
-        photoAlt={dict.photos.partnership}
+        photo="kogi-elders"
+        photoAlt={dict.photos["kogi-elders"]}
+        photoPosition="100% 50%"
         crumbs={[
           { name: dict.nav.home, href: path("") },
           { name: dict.nav.about, href: path("/about") },
@@ -51,141 +47,136 @@ export default async function AboutPage({ params }: PageProps<"/[locale]/about">
         crumbsLabel={dict.nav.breadcrumb}
       />
 
-      {/* Who we are, vision & mission */}
-      <section className="py-24 sm:py-28">
-        <Container className="grid gap-14 lg:grid-cols-[1.2fr_1fr] lg:gap-20">
-          <div>
-            <SectionHeading eyebrow={t.story.eyebrow} title={t.story.title} />
-            <div className="mt-6 space-y-5 text-lg leading-relaxed text-ink-soft">
+      {/* Who we are, vision and mission */}
+      <Section tone="white">
+        <Container className="grid gap-12 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-6">
+            <SectionHeading title={t.story.title} />
+            <div className="reveal mt-10 space-y-5 text-lead text-ink-soft lg:mt-12">
               {t.story.paragraphs.map((paragraph) => (
-                <p key={paragraph} className="reveal">
-                  {paragraph}
-                </p>
+                <p key={paragraph}>{paragraph}</p>
               ))}
             </div>
           </div>
-          <div className="grid gap-5 self-center">
-            {[
-              { item: t.vision, style: "bg-brand-blue text-white" },
-              { item: t.mission, style: "bg-brand-green text-white" },
-            ].map(({ item, style }) => (
-              <div key={item.title} className={`reveal rounded-[2rem] p-8 ${style}`}>
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/75">{item.title}</p>
-                <p className="mt-4 font-display text-2xl font-bold leading-snug">{item.text}</p>
+          <div className="grid gap-10 self-start lg:col-span-5 lg:col-start-8 lg:pt-2">
+            {[t.vision, t.mission].map((item) => (
+              <div key={item.title} className="reveal">
+                <p className="text-small font-semibold text-muted">{item.title}</p>
+                <p className="mt-4 border-l-2 border-navy-900 pl-6 font-display text-[1.5rem] font-semibold leading-snug text-ink lg:text-[1.75rem]">{item.text}</p>
               </div>
             ))}
           </div>
         </Container>
-      </section>
+      </Section>
 
       {/* Philosophy */}
-      <section className="bg-sand py-24 sm:py-28">
+      <Section tone="ivory">
         <Container>
-          <SectionHeading eyebrow={t.philosophy.eyebrow} title={t.philosophy.title} lead={t.philosophy.lead} />
-          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {t.philosophy.items.map((item, i) => (
-              <FeatureCard key={item.title} icon={principleIcons[i]} title={item.title} text={item.text} tone="sand" />
+          <SectionHeading title={t.philosophy.title} lead={t.philosophy.lead} />
+          <CardGrid className="mt-10 sm:grid-cols-2 lg:mt-12 lg:grid-cols-3">
+            {t.philosophy.items.map((item) => (
+              <DetailCard
+                key={item.title}
+                title={item.title}
+                teaser={item.text}
+                body={<p className="text-lead">{item.text}</p>}
+                tone="ivory"
+                moreLabel={dict.common.readMore}
+                closeLabel={close}
+              />
             ))}
-          </div>
+          </CardGrid>
         </Container>
-      </section>
+      </Section>
 
       {/* How GIA works */}
-      <section className="py-24 sm:py-28">
+      <Section tone="white">
         <Container>
-          <SectionHeading eyebrow={t.how.eyebrow} title={t.how.title} lead={t.how.lead} />
-          <div className="mt-16">
-            <Steps steps={dict.flow.steps} icons={flowIcons} />
+          <SectionHeading title={t.how.title} lead={t.how.lead} />
+          <div className="mt-10 lg:mt-12">
+            <Steps steps={dict.flow.steps} />
           </div>
         </Container>
-      </section>
+      </Section>
 
       {/* Why it matters */}
-      <section className="relative isolate overflow-hidden py-24 text-white sm:py-28">
-        <MotionBackdrop />
-        <Container className="grid gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
-          <div>
-            <SectionHeading eyebrow={t.why.eyebrow} title={t.why.title} tone="light" />
-            <PhotoCircle photos={["earth"]} alts={[dict.photos.earth]} className="mx-auto mt-14 hidden w-full max-w-xs lg:block" />
-          </div>
-          <div className="space-y-5">
+      <Section tone="navy">
+        <Container>
+          <SectionHeading title={t.why.title} tone="light" />
+          <div className="mt-10 grid gap-10 lg:mt-12 lg:grid-cols-3 lg:gap-8">
             {t.why.items.map((item) => (
-              <div key={item.title} className="reveal rounded-3xl bg-white/[0.07] p-8 ring-1 ring-white/10">
-                <h3 className="font-display text-2xl font-bold">{item.title}</h3>
-                <p className="mt-4 leading-relaxed text-white/80">{item.text}</p>
+              <div key={item.title} className="reveal border-t border-white/20 pt-6">
+                <h3 className="font-display text-xl font-semibold text-white">{item.title}</h3>
+                <p className="mt-3 text-white/72">{item.text}</p>
               </div>
             ))}
           </div>
         </Container>
-      </section>
-
-      {/* Offices */}
-      <section className="py-24 sm:py-28">
-        <Container className="grid items-center gap-14 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
-          <div className="reveal relative mx-auto w-full max-w-md">
-            <div className="relative aspect-square overflow-hidden rounded-[2.5rem] bg-navy">
-              <Photo name="earth" alt={dict.photos.earth} />
-            </div>
-          </div>
-          <div>
-            <SectionHeading eyebrow={t.offices.eyebrow} title={t.offices.title} />
-            <div className="mt-10 grid gap-5">
-              <OfficeCard label={dict.offices.hq.label} place={officePlace(site.offices.hq)} text={t.offices.hq} />
-              <OfficeCard label={dict.offices.africa.label} place={officePlace(site.offices.africa)} text={t.offices.africa} />
-            </div>
-          </div>
-        </Container>
-      </section>
+      </Section>
 
       {/* People */}
-      <section id="people" className="scroll-mt-24 bg-mist py-24 sm:py-28">
+      <Section tone="ivory" id="people">
         <Container>
-          <SectionHeading eyebrow={t.people.eyebrow} title={t.people.title} />
-          <h3 className="reveal mt-14 text-xs font-bold uppercase tracking-[0.18em] text-brand-blue">{dict.common.founder}</h3>
-          <div className="mt-5 max-w-3xl">
-            <PersonCard person={founder} featured />
-          </div>
-          <h3 className="reveal mt-14 text-xs font-bold uppercase tracking-[0.18em] text-brand-blue">{dict.common.team}</h3>
-          <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {team.map((person) => (
-              <PersonCard key={person.name} person={person} />
-            ))}
-          </div>
-          <h3 className="reveal mt-14 text-xs font-bold uppercase tracking-[0.18em] text-brand-blue">{dict.common.advisors}</h3>
-          <div className="mt-5 grid gap-5 lg:grid-cols-3">
-            {advisors.map((person) => (
-              <PersonCard key={person.name} person={person} featured />
-            ))}
-          </div>
-          <div className="reveal mt-14 grid items-center gap-8 rounded-[2rem] bg-navy p-8 text-white sm:grid-cols-[auto_1fr] sm:p-10">
-            <PhotoCircle photos={["boardroom"]} alts={[dict.photos.boardroom]} className="mx-auto w-40" />
-            <div>
-              <h3 className="font-display text-2xl font-bold">{t.people.council.title}</h3>
-              <p className="mt-3 leading-relaxed text-white/80">{t.people.council.text}</p>
+          <SectionHeading title={t.people.title} />
+
+          <div className="mt-10 lg:mt-12">
+            <h3 className={groupHeading}>{dict.common.founder}</h3>
+            <div className="mt-8">
+              <PortraitCard person={founder} featured moreLabel={dict.common.readMore} closeLabel={close} />
             </div>
           </div>
+
+          <div className="mt-16">
+            <h3 className={groupHeading}>{dict.common.team}</h3>
+            <div className="mt-8 grid grid-cols-2 gap-8 lg:grid-cols-4">
+              {team.map((person) => (
+                <PortraitCard key={person.name} person={person} moreLabel={dict.common.readMore} closeLabel={close} />
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-16">
+            <h3 className={groupHeading}>{dict.common.advisors}</h3>
+            <div className="mt-8 grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-4">
+              {advisors.map((person) => (
+                <PortraitCard key={person.name} person={person} moreLabel={dict.common.readMore} closeLabel={close} />
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-16">
+            <h3 className={groupHeading}>{dict.common.expertAdvisors}</h3>
+            <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5">
+              {expertAdvisors.map((person) => (
+                <PortraitCard key={person.name} person={person} size="sm" mono moreLabel={dict.common.readMore} closeLabel={close} />
+              ))}
+            </div>
+          </div>
+
+          <div className="reveal mt-16">
+            <h3 className={groupHeading}>{t.people.council.title}</h3>
+            <p className="mt-4 max-w-2xl text-lead text-ink-soft">{t.people.council.text}</p>
+          </div>
         </Container>
-      </section>
+      </Section>
 
       {/* Implementation partner */}
-      <section className="py-24 sm:py-28">
-        <Container className="max-w-4xl text-center">
-          <Eyebrow>{t.foundation.eyebrow}</Eyebrow>
-          <h2 className="reveal mt-5 font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">{t.foundation.title}</h2>
-          <p className="reveal mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-ink-soft">{t.foundation.text}</p>
+      <Section tone="white">
+        <Container>
+          <div className="max-w-3xl">
+            <h2 className="reveal font-display text-h2 text-ink">{t.foundation.title}</h2>
+            <p className="reveal mt-6 text-lead text-ink-soft">{t.foundation.text}</p>
+          </div>
         </Container>
-      </section>
+      </Section>
 
       <CtaBanner
-        eyebrow={dict.ctaBand.eyebrow}
         title={dict.ctaBand.title}
         text={dict.ctaBand.text}
         actions={[
           { label: dict.cta.conversation, href: path("/contact") },
           { label: dict.cta.join, href: `${path("/contact")}?topic=membership` },
         ]}
-        photo="handshake"
-        photoAlt={dict.photos.handshake}
       />
     </>
   );

@@ -1,18 +1,16 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { AreaCard, FeatureCard, PersonCard, ProjectCard } from "@/components/cards";
+import { AfricaLinesMap } from "@/components/AfricaLinesMap";
+import { AreaCard, CardGrid, DetailCard, PortraitCard, ProjectCard } from "@/components/cards";
 import { CtaBanner } from "@/components/CtaBanner";
-import { Icon, type IconName } from "@/components/Icon";
-import { MotionBackdrop } from "@/components/MotionBackdrop";
-import { PhotoCircle } from "@/components/PhotoCircle";
+import { Figure } from "@/components/Figure";
+import { SpinningEarth } from "@/components/SpinningEarth";
 import { Steps } from "@/components/Steps";
-import { ButtonLink, CheckList, Container, Eyebrow, SectionHeading, TextLink } from "@/components/ui";
+import { ButtonLink, CheckList, Container, Section, SectionHeading, TextLink } from "@/components/ui";
 import { getDictionary } from "@/i18n";
 import { isLocale } from "@/i18n/config";
-import { areaIcons, flowIcons } from "@/config/icons";
 import { advisors, founder } from "@/config/people";
 import { localePath } from "@/config/routes";
-import { officePlace, site } from "@/config/site";
 import { pageMetadata } from "@/lib/seo";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]">): Promise<Metadata> {
@@ -22,8 +20,7 @@ export async function generateMetadata({ params }: PageProps<"/[locale]">): Prom
   return pageMetadata({ locale, path: "", title: dict.meta.homeTitle, description: dict.meta.description, absoluteTitle: true });
 }
 
-const differentIcons: IconName[] = ["book", "compass", "sprout", "target"];
-const circleIcons: IconName[] = ["tree", "sparkles", "sprout", "handshake"];
+const pad = (n: number) => String(n).padStart(2, "0");
 
 export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
@@ -32,269 +29,297 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const t = dict.home;
   const path = (p: string) => localePath(locale, p);
 
+  const paths = [
+    { path: t.framework.wisdom, href: path("/path-of-wisdom") },
+    { path: t.framework.action, href: path("/path-of-action") },
+  ];
+
+  const pathBlock = ({ path: p, href }: (typeof paths)[number]) => (
+    <div key={p.label} className="reveal flex flex-col border-t-2 border-navy-900 pt-8">
+      <h3 className="font-display text-[2rem] font-semibold leading-tight text-ink">{p.label}</h3>
+      <p className="mt-2 text-lead text-ink-soft">{p.tagline}</p>
+      <CheckList items={p.points} className="mt-6" />
+      <TextLink href={href} className="mt-auto self-start pt-8">
+        {dict.common.learnMore}
+      </TextLink>
+    </div>
+  );
+
   return (
     <>
       {/* Hero */}
-      <section className="relative isolate overflow-hidden text-white">
-        <MotionBackdrop />
-        <Container className="grid min-h-[100svh] items-center gap-14 pb-36 pt-32 lg:grid-cols-[1.15fr_1fr] lg:gap-10 lg:pb-40 lg:pt-36">
-          <div>
-            <Eyebrow tone="light">{t.hero.eyebrow}</Eyebrow>
-            <h1 className="mt-6 font-display text-[2.9rem] font-bold leading-[1.02] tracking-tight sm:text-7xl xl:text-8xl">
-              {t.hero.title}{" "}
-              <span className="bg-gradient-to-r from-white to-[#a9c6ff] bg-clip-text text-transparent">
-                {t.hero.titleAccent}
-              </span>
+      <section className="on-dark relative isolate overflow-hidden bg-night text-white">
+        <Container className="pointer-events-none relative z-10 pt-32 lg:flex lg:min-h-[max(42rem,100svh)] lg:items-center lg:pb-16 lg:pt-24">
+          <div className="pointer-events-auto max-w-[36rem] lg:max-w-[30rem] xl:max-w-[38rem]">
+            <h1 className="max-w-[12ch] font-display text-display text-white">
+              {t.hero.title} <span className="block font-light">{t.hero.titleAccent}</span>
             </h1>
-            <p className="mt-7 max-w-xl text-lg leading-relaxed text-white/80 sm:text-xl">{t.hero.lead}</p>
+            <p className="mt-8 max-w-[34rem] text-lead text-white/72">{t.hero.lead}</p>
             <div className="mt-10 flex flex-wrap gap-3">
-              <ButtonLink href={path("/contact")}>{dict.cta.conversation}</ButtonLink>
-              <ButtonLink href={path("/what-we-do")} variant="outlineLight">
+              <ButtonLink href={path("/contact")} variant="white" className="w-full sm:w-auto">
+                {dict.cta.conversation}
+              </ButtonLink>
+              <ButtonLink href={path("/what-we-do")} variant="outlineLight" icon={null} className="w-full sm:w-auto">
                 {dict.cta.explore}
               </ButtonLink>
             </div>
           </div>
-          <PhotoCircle photos={["earth"]} alts={[dict.photos.earth]} preload className="mx-auto w-full max-w-[19rem] sm:max-w-md lg:max-w-lg" />
         </Container>
+        <div className="relative mt-12 h-[86vw] max-h-[36rem] lg:static lg:m-0 lg:h-auto lg:max-h-none">
+          <SpinningEarth
+            label={dict.common.pauseEarth}
+            controlClassName="absolute bottom-5 right-5 z-20"
+            className="absolute left-[10vw] top-0 aspect-square w-[122vw] max-w-[46rem] md:left-[30vw] lg:left-auto lg:right-0 lg:top-[calc(50%+2.5rem)] lg:w-[min(56vw,90svh)] lg:max-w-none lg:-translate-y-1/2 lg:translate-x-[30%] xl:w-[min(62vw,96svh,68rem)] xl:translate-x-[24%]"
+          />
+        </div>
       </section>
 
       {/* At a glance */}
-      <Container className="relative z-10 -mt-20">
-        <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-line bg-line shadow-xl shadow-brand-blue/10 lg:grid-cols-4">
+      <Container>
+        <dl className="grid grid-cols-2 gap-px border-b border-line bg-line lg:grid-cols-4">
           {t.glance.map((item) => (
-            <div key={item.label} className="flex flex-col-reverse gap-1.5 bg-white p-6 sm:p-8">
-              <dt className="text-sm leading-snug text-ink-soft">{item.label}</dt>
-              <dd className="font-display text-2xl font-bold text-brand-blue sm:text-3xl">{item.value}</dd>
+            <div
+              key={item.label}
+              className="flex flex-col-reverse justify-end gap-2 bg-white px-4 py-7 max-lg:odd:pl-0 sm:px-6 lg:py-12 lg:first:pl-0"
+            >
+              <dt className="text-[0.9375rem] text-ink-soft">{item.label}</dt>
+              <dd className="whitespace-nowrap font-display text-[1.5rem] font-medium leading-tight tracking-[-0.02em] text-ink sm:text-[clamp(1.75rem,1.4rem+1vw,2.25rem)]">
+                {item.value}
+              </dd>
             </div>
           ))}
         </dl>
       </Container>
 
       {/* The challenge */}
-      <section className="py-24 sm:py-28">
-        <Container className="grid gap-14 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
-          <div>
-            <SectionHeading eyebrow={t.challenge.eyebrow} title={t.challenge.title} />
-            <p className="reveal mt-6 text-lg leading-relaxed text-ink-soft">{t.challenge.text}</p>
-            <p className="reveal mt-8 border-l-4 border-brand-red pl-5 font-display text-2xl font-bold leading-snug text-ink">
-              {t.challenge.closing}
-            </p>
+      <Section tone="white">
+        <Container className="grid gap-12 lg:grid-cols-12 lg:gap-x-12">
+          <div className="lg:col-span-7">
+            <SectionHeading title={t.challenge.title} />
+            <p className="reveal mt-6 text-lead text-ink-soft">{t.challenge.text}</p>
+            <p className="reveal mt-10 border-l-2 border-navy-900 pl-6 font-display text-statement text-ink">{t.challenge.closing}</p>
           </div>
-          <ul className="space-y-4 self-center">
+          <ol className="reveal border-b border-line lg:col-span-5 lg:self-center">
             {t.challenge.points.map((point, i) => (
-              <li key={point.title} className="reveal flex gap-5 rounded-3xl bg-sand p-6">
-                <span className="font-display text-4xl font-bold text-brand-red-700/80">0{i + 1}</span>
-                <span>
-                  <span className="block text-lg font-extrabold text-ink">{point.title}</span>
-                  <span className="mt-1 block leading-relaxed text-ink-soft">{point.text}</span>
-                </span>
+              <li key={point.title} className="grid grid-cols-[3rem_1fr] border-t border-line py-6">
+                <span className="pt-0.5 text-index tabular-nums text-muted">{pad(i + 1)}</span>
+                <div>
+                  <h3 className="font-display text-lg font-semibold text-ink">{point.title}</h3>
+                  <p className="mt-2 text-ink-soft">{point.text}</p>
+                </div>
               </li>
             ))}
-          </ul>
+          </ol>
         </Container>
-      </section>
+      </Section>
 
       {/* What GIA does differently */}
-      <section className="relative isolate overflow-hidden py-24 text-white sm:py-28">
-        <MotionBackdrop />
+      <Section tone="navy">
         <Container>
-          <SectionHeading eyebrow={t.different.eyebrow} title={t.different.title} lead={t.different.lead} tone="light" />
-          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {t.different.items.map((item, i) => (
-              <FeatureCard key={item.title} icon={differentIcons[i]} title={item.title} text={item.text} tone="dark" />
-            ))}
+          <div className="grid gap-10 lg:grid-cols-12 lg:gap-x-8">
+            <SectionHeading title={t.different.title} lead={t.different.lead} tone="light" className="lg:col-span-5" />
+            <div className="reveal grid gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:col-span-7">
+              {t.different.items.map((item) => (
+                <div key={item.title} className="border-t border-white/20 pt-6">
+                  <h3 className="font-display text-xl font-semibold text-white">{item.title}</h3>
+                  <p className="mt-3 text-white/72">{item.text}</p>
+                </div>
+              ))}
+            </div>
           </div>
-          <h3 className="mt-20 text-xs font-bold uppercase tracking-[0.18em] text-white/70">{dict.flow.title}</h3>
+          <h3 className="mt-14 font-display text-xl font-semibold text-white lg:mt-20">{dict.flow.title}</h3>
           <div className="mt-8">
-            <Steps steps={dict.flow.steps} icons={flowIcons} tone="light" />
+            <Steps steps={dict.flow.steps} tone="light" />
           </div>
         </Container>
-      </section>
+      </Section>
 
-      {/* Wisdom + Action */}
-      <section className="py-24 sm:py-28">
+      {/* Two paths */}
+      <Section tone="white">
         <Container>
-          <SectionHeading eyebrow={t.framework.eyebrow} title={t.framework.title} lead={t.framework.lead} align="center" />
-          <div className="mt-16 grid items-center gap-10 lg:grid-cols-[1fr_auto_1fr]">
-            {[
-              { path: t.framework.wisdom, href: path("/path-of-wisdom"), accent: "bg-brand-blue" },
-              { path: t.framework.action, href: path("/path-of-action"), accent: "bg-brand-green" },
-            ].map(({ path: p, href, accent }, i) => (
-              <div key={p.label} className={`reveal rounded-[2rem] border border-line bg-white p-8 shadow-sm ${i === 1 ? "lg:order-3" : ""}`}>
-                <span className={`inline-block h-1.5 w-14 rounded-full ${accent}`} aria-hidden="true" />
-                <h3 className="mt-6 font-display text-3xl font-bold text-ink">{p.label}</h3>
-                <p className="mt-2 text-lg font-semibold text-brand-green-700">{p.tagline}</p>
-                <CheckList items={p.points} className="mt-6" />
-                <TextLink href={href} className="mt-8">
-                  {dict.common.learnMore}
-                </TextLink>
-              </div>
-            ))}
-            <PhotoCircle photos={["strategy"]} alts={[dict.photos.strategy]} tone="light" className="order-first mx-auto w-full max-w-[16rem] sm:max-w-xs lg:order-2 lg:w-72" />
+          <SectionHeading title={t.framework.title} lead={t.framework.lead} />
+          <div className="mt-10 grid gap-10 lg:mt-12 lg:grid-cols-[1fr_20rem_1fr] lg:gap-12">
+            {pathBlock(paths[0])}
+            <Figure
+              name="womens-circle"
+              alt={dict.photos["womens-circle"]}
+              ratio="4/5"
+              sizes="(min-width: 1024px) 20rem, (min-width: 640px) 24rem, 90vw"
+              className="order-first w-full max-w-sm lg:order-none lg:max-w-none"
+            />
+            {pathBlock(paths[1])}
           </div>
         </Container>
-      </section>
+      </Section>
 
-      {/* Areas of impact */}
-      <section className="bg-mist py-24 sm:py-28">
+      {/* Eight areas of work */}
+      <Section tone="ivory">
         <Container>
-          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-            <SectionHeading eyebrow={t.areas.eyebrow} title={t.areas.title} lead={t.areas.lead} />
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <SectionHeading title={t.areas.title} lead={t.areas.lead} />
             <TextLink href={path("/what-we-do")} className="shrink-0">
               {dict.nav.whatWeDo}
             </TextLink>
           </div>
-          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <CardGrid className="mt-10 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4">
             {dict.areas.map((area, i) => (
               <AreaCard
                 key={area.id}
-                href={`${path("/what-we-do")}#${area.id}`}
-                icon={areaIcons[area.id]}
-                title={area.title}
-                text={area.short}
                 index={i}
+                area={area}
+                href={`${path("/what-we-do")}#${area.id}`}
+                labels={{
+                  more: dict.common.readMore,
+                  close: dict.common.close,
+                  whatItIs: dict.common.whatItIs,
+                  whoItServes: dict.common.whoItServes,
+                  whatGiaDoes: dict.common.whatGiaDoes,
+                  outcome: dict.common.outcome,
+                  link: dict.common.seeInWhatWeDo,
+                }}
               />
             ))}
-          </div>
+          </CardGrid>
         </Container>
-      </section>
+      </Section>
 
       {/* Global reach */}
-      <section className="py-24 sm:py-28">
-        <Container className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
-          <div>
-            <SectionHeading eyebrow={t.reach.eyebrow} title={t.reach.title} />
-            <p className="reveal mt-6 text-lg leading-relaxed text-ink-soft">{t.reach.text}</p>
-            <ul className="reveal mt-8 flex flex-wrap gap-2">
-              {t.reach.places.map((place, i) => (
-                <li
-                  key={place}
-                  className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold ${
-                    i < 2 ? "bg-brand-blue text-white" : "bg-brand-green-50 text-brand-green-700"
-                  }`}
-                >
-                  <Icon name="mapPin" className="size-4" />
+      <Section tone="white">
+        <Container className="grid items-center gap-12 lg:grid-cols-12 lg:gap-x-8">
+          <div className="lg:col-span-5">
+            <SectionHeading title={t.reach.title} />
+            <p className="reveal mt-6 text-lead text-ink-soft">{t.reach.text}</p>
+            <ul className="reveal mt-10 grid grid-cols-2 gap-px border-y border-line bg-line">
+              {t.reach.places.map((place) => (
+                <li key={place} className="bg-white py-4 pr-4 font-medium text-ink even:pl-4">
                   {place}
                 </li>
               ))}
             </ul>
           </div>
-          <div className="reveal grid gap-5 sm:grid-cols-2">
-            <div className="rounded-3xl border border-line bg-white p-7">
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-ink-soft">{dict.offices.hq.label}</p>
-              <p className="mt-2 font-display text-3xl font-bold text-ink">{officePlace(site.offices.hq)}</p>
-              <p className="mt-3 leading-relaxed text-ink-soft">{dict.offices.hq.text}</p>
-            </div>
-            <div className="rounded-3xl bg-navy p-7 text-white sm:translate-y-10">
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-white/60">{dict.offices.africa.label}</p>
-              <p className="mt-2 font-display text-3xl font-bold">{officePlace(site.offices.africa)}</p>
-              <p className="mt-3 leading-relaxed text-white/75">{dict.offices.africa.text}</p>
-            </div>
+          <div className="lg:col-span-6 lg:col-start-7">
+            <Figure
+              name="desk-globe"
+              alt={dict.photos["desk-globe"]}
+              ratio="4/5"
+              sizes="(min-width: 640px) 32rem, 90vw"
+              className="reveal max-w-lg lg:ml-auto"
+            />
           </div>
         </Container>
-      </section>
+      </Section>
 
       {/* Africa */}
-      <section className="relative isolate overflow-hidden bg-sand py-24 sm:py-28">
-        <Container className="grid items-center gap-14 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
-          <PhotoCircle photos={["earth"]} alts={[dict.photos.earth]} tone="light" className="reveal mx-auto w-full max-w-md" />
-          <div>
-            <Eyebrow>{t.africa.eyebrow}</Eyebrow>
-            <h2 className="reveal mt-5 font-display text-3xl font-bold leading-tight tracking-tight text-ink sm:text-4xl lg:text-5xl">
-              {t.africa.title}
-            </h2>
-            <p className="reveal mt-6 text-lg leading-relaxed text-ink-soft">{t.africa.text}</p>
+      <Section tone="ivory">
+        <Container className="grid items-center gap-12 lg:grid-cols-12 lg:gap-x-8">
+          <div className="lg:col-span-5">
+            <AfricaLinesMap label={t.africa.mapLabel} className="mx-auto max-w-lg" />
+          </div>
+          <div className="lg:col-span-6 lg:col-start-7">
+            <SectionHeading title={t.africa.title} />
+            <p className="reveal mt-6 text-lead text-ink-soft">{t.africa.text}</p>
             <div className="mt-9 flex flex-wrap gap-3">
-              <ButtonLink href={path("/africa")} variant="blue">
-                {t.africa.link}
-              </ButtonLink>
+              <ButtonLink href={path("/africa")}>{t.africa.link}</ButtonLink>
               <ButtonLink href={`${path("/contact")}?topic=africa`} variant="outlineDark">
                 {dict.cta.collaborate}
               </ButtonLink>
             </div>
           </div>
         </Container>
-      </section>
+      </Section>
 
       {/* Strategic partnerships */}
-      <section className="py-24 sm:py-28">
-        <Container className="grid gap-14 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
-          <div>
-            <SectionHeading eyebrow={t.partnerships.eyebrow} title={t.partnerships.title} />
-            <p className="reveal mt-6 text-lg leading-relaxed text-ink-soft">{t.partnerships.text}</p>
-            <div className="reveal mt-8 rounded-3xl bg-brand-green-50 p-6">
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-green-700">{t.partnerships.foundation.label}</p>
-              <p className="mt-2 font-display text-2xl font-bold text-ink">{t.partnerships.foundation.name}</p>
-              <p className="mt-2 leading-relaxed text-ink-soft">{t.partnerships.foundation.text}</p>
+      <Section tone="white">
+        <Container className="grid gap-12 lg:grid-cols-12 lg:gap-x-8">
+          <div className="lg:col-span-5">
+            <SectionHeading title={t.partnerships.title} />
+            <p className="reveal mt-6 text-lead text-ink-soft">{t.partnerships.text}</p>
+            <div className="reveal mt-10 border-t border-line pt-6">
+              <p className="text-small text-muted">{t.partnerships.foundation.label}</p>
+              <p className="mt-2 font-display text-2xl font-semibold text-ink">{t.partnerships.foundation.name}</p>
+              <p className="mt-3 text-ink-soft">{t.partnerships.foundation.text}</p>
             </div>
             <TextLink href={path("/partners")} className="mt-8">
               {t.partnerships.link}
             </TextLink>
           </div>
-          <div>
-            <h3 className="reveal text-xs font-bold uppercase tracking-[0.18em] text-brand-blue">{t.partnerships.circlesTitle}</h3>
-            <div className="mt-6 grid gap-5 sm:grid-cols-2">
-              {dict.partners.circles.items.map((circle, i) => (
-                <FeatureCard key={circle.title} icon={circleIcons[i]} title={circle.title} text={circle.role} />
+          <div className="lg:col-span-6 lg:col-start-7">
+            <h3 className="font-display text-xl font-semibold text-ink">{t.partnerships.circlesTitle}</h3>
+            <CardGrid className="mt-6 sm:grid-cols-2">
+              {dict.partners.circles.items.map((circle) => (
+                <DetailCard
+                  key={circle.title}
+                  title={circle.title}
+                  teaser={circle.role}
+                  tone="white"
+                  moreLabel={dict.common.readMore}
+                  closeLabel={dict.common.close}
+                  body={
+                    <dl className="space-y-5">
+                      <div>
+                        <dt className="text-small font-semibold text-ink">{dict.partners.circles.whoLabel}</dt>
+                        <dd className="mt-1.5">{circle.who}</dd>
+                      </div>
+                      <div>
+                        <dt className="text-small font-semibold text-ink">{dict.partners.circles.roleLabel}</dt>
+                        <dd className="mt-1.5">{circle.role}</dd>
+                      </div>
+                    </dl>
+                  }
+                />
               ))}
-            </div>
+            </CardGrid>
             <div className="mt-8">
-              <ButtonLink href={`${path("/contact")}?topic=membership`} variant="blue">
-                {dict.cta.join}
-              </ButtonLink>
+              <ButtonLink href={`${path("/contact")}?topic=membership`}>{dict.cta.join}</ButtonLink>
             </div>
           </div>
         </Container>
-      </section>
+      </Section>
 
-      {/* Stories */}
-      <section className="bg-mist py-24 sm:py-28">
+      {/* Stories of impact */}
+      <Section tone="ivory">
         <Container>
-          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-            <SectionHeading eyebrow={t.stories.eyebrow} title={t.stories.title} lead={t.stories.lead} />
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <SectionHeading title={t.stories.title} lead={t.stories.lead} />
             <TextLink href={path("/impact")} className="shrink-0">
               {t.stories.link}
             </TextLink>
           </div>
-          <div className="mt-14 grid gap-6 md:grid-cols-3">
+          <div className="reveal mt-10 grid gap-10 md:grid-cols-3 lg:mt-12">
             {dict.impact.projects.map((project) => (
               <ProjectCard
                 key={project.id}
+                project={project}
                 href={`${path("/impact")}#${project.id}`}
-                image={project.image}
-                imageAlt={dict.photos[project.image]}
-                title={project.title}
-                place={project.place}
-                text={project.challenge}
-                status={project.status}
+                labels={dict.common}
+                linkLabel={dict.common.seeFullStory}
               />
             ))}
           </div>
         </Container>
-      </section>
+      </Section>
 
       {/* Leadership */}
-      <section className="py-24 sm:py-28">
+      <Section tone="white">
         <Container>
-          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-            <SectionHeading eyebrow={t.leadership.eyebrow} title={t.leadership.title} lead={t.leadership.lead} />
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <SectionHeading title={t.leadership.title} lead={t.leadership.lead} />
             <TextLink href={`${path("/about")}#people`} className="shrink-0">
               {t.leadership.link}
             </TextLink>
           </div>
-          <div className="mt-14 grid items-start gap-5 lg:grid-cols-2">
-            <PersonCard person={founder} featured />
-            <div className="grid gap-5">
-              {advisors.map((person) => (
-                <PersonCard key={person.name} person={person} />
-              ))}
-            </div>
+          <div className="reveal mt-10 lg:mt-12">
+            <PortraitCard person={founder} featured moreLabel={dict.common.readMore} closeLabel={dict.common.close} />
+          </div>
+          <div className="reveal mt-12 grid gap-8 sm:grid-cols-3">
+            {advisors.map((person) => (
+              <PortraitCard key={person.name} person={person} moreLabel={dict.common.readMore} closeLabel={dict.common.close} />
+            ))}
           </div>
         </Container>
-      </section>
+      </Section>
 
       <CtaBanner
-        eyebrow={dict.ctaBand.eyebrow}
         title={t.cta.title}
         text={t.cta.text}
         actions={[
@@ -302,8 +327,6 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
           { label: dict.cta.join, href: `${path("/contact")}?topic=membership` },
           { label: dict.cta.invest, href: `${path("/contact")}?topic=investment` },
         ]}
-        photo="handshake"
-        photoAlt={dict.photos.handshake}
       />
     </>
   );

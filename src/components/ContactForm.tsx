@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { Icon } from "./Icon";
+import { buttonClass } from "./ui";
 
 type Labels = {
   title: string;
@@ -68,13 +70,13 @@ export function ContactForm({ labels, email, endpoint }: { labels: Labels; email
       "",
       value("message"),
     ].filter((line) => line !== null);
-    const subject = `${labels.subject}: ${topic} – ${value("company") || value("name")}`;
+    const subject = `${labels.subject}: ${topic}, ${value("company") || value("name")}`;
     window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
     setStatus("mailto");
   }
 
   const field =
-    "mt-2 block w-full rounded-2xl border border-line bg-white px-4 py-3.5 text-ink placeholder:text-ink-soft/50 transition-colors focus:border-brand-blue focus:outline-none focus:ring-4 focus:ring-brand-blue/10";
+    "mt-2 block w-full rounded-[2px] border border-field bg-white px-4 py-3 text-ink placeholder:text-muted transition-colors focus:border-navy-900";
   const label = "text-sm font-bold text-ink";
   const req = (
     <span className="font-normal text-ink-soft">
@@ -87,8 +89,8 @@ export function ContactForm({ labels, email, endpoint }: { labels: Labels; email
     status === "sent" ? labels.success : status === "mailto" ? labels.mailto : status === "error" ? labels.error : "";
 
   return (
-    <form onSubmit={onSubmit} className="rounded-[2rem] border border-line bg-white p-6 shadow-xl shadow-brand-blue/5 sm:p-10">
-      <h2 className="text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">{labels.title}</h2>
+    <form onSubmit={onSubmit} className="border border-line bg-white p-6 sm:p-10">
+      <h2 className="font-display text-[1.75rem] font-semibold tracking-tight text-ink">{labels.title}</h2>
 
       <div className="mt-8 grid gap-6 sm:grid-cols-2">
         <label className="block">
@@ -115,20 +117,23 @@ export function ContactForm({ labels, email, endpoint }: { labels: Labels; email
         </label>
         <label className="block sm:col-span-2">
           <span className={label}>{labels.topic}</span>
-          <select ref={topicSelect} name="topic" defaultValue="partnership" className={field}>
+          <span className="relative mt-2 block">
+            <select ref={topicSelect} name="topic" defaultValue="partnership" className={`${field.replace("mt-2 ", "")} appearance-none pr-12`}>
             {Object.entries(labels.topics).map(([key, text]) => (
               <option key={key} value={key}>
                 {text}
               </option>
             ))}
           </select>
+            <Icon name="chevronDown" className="pointer-events-none absolute right-4 top-1/2 size-4 -translate-y-1/2 text-ink-soft" />
+          </span>
         </label>
         <label className="block sm:col-span-2">
           <span className={label}>
             {labels.message}
             {req}
           </span>
-          <textarea name="message" required rows={6} className={`${field} resize-y`} />
+          <textarea name="message" required rows={6} className={`${field} min-h-40 resize-y`} />
         </label>
         {/* Honeypot: hidden from people, often filled in by spam bots */}
         <input name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
@@ -136,21 +141,18 @@ export function ContactForm({ labels, email, endpoint }: { labels: Labels; email
 
       <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-ink-soft">{labels.privacy}</p>
-        <button
-          type="submit"
-          disabled={status === "sending"}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-red-700 px-7 py-3.5 font-bold text-white shadow-lg shadow-brand-red/25 transition-all hover:-translate-y-0.5 hover:bg-brand-red-800 disabled:opacity-60"
-        >
+        <button type="submit" disabled={status === "sending"} className={`${buttonClass("primary")} disabled:opacity-60`}>
           {status === "sending" ? labels.sending : labels.submit}
         </button>
       </div>
 
       <p
         role="status"
-        className={`text-sm font-semibold ${message ? "mt-6 rounded-2xl px-4 py-3" : ""} ${
-          status === "error" ? "bg-brand-red-50 text-brand-red-800" : "bg-brand-green-50 text-brand-green-700"
+        className={`flex gap-3 text-sm font-medium text-ink ${message ? "mt-6 border-l-2 bg-ivory px-4 py-3" : ""} ${
+          status === "error" ? "border-ink" : "border-brand-green-700"
         }`}
       >
+        {status === "error" && <Icon name="alert" className="mt-0.5 size-4 shrink-0" />}
         {message}
       </p>
     </form>

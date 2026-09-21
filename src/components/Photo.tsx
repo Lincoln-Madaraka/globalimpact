@@ -26,6 +26,7 @@ export function Photo({
       fill
       sizes={sizes}
       preload={preload}
+      unoptimized={Boolean(src)}
       className={`object-cover ${className}`}
       style={position ? { objectPosition: position } : undefined}
     />

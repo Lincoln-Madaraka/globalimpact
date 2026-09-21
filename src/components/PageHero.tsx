@@ -2,51 +2,63 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import type { PhotoName } from "@/config/photos";
 import { breadcrumbSchema } from "@/lib/structured-data";
-import { Icon } from "./Icon";
+import { Figure } from "./Figure";
 import { JsonLd } from "./JsonLd";
-import { MotionBackdrop } from "./MotionBackdrop";
-import { PhotoCircle } from "./PhotoCircle";
-import { Container, Eyebrow } from "./ui";
+import { Container } from "./ui";
 
 export type Crumb = { name: string; href: string };
 
-/** Inner-page hero: motion background, breadcrumbs (with BreadcrumbList JSON-LD), title and a circular photo. */
+/**
+ * Inner-page hero: white, typographic, with breadcrumbs (and BreadcrumbList JSON-LD).
+ * Optionally a photo (`photo`) or any other visual (`visual`, e.g. a map) on the right.
+ * `variant="article"` centres the header on the 42rem reading column.
+ */
 export function PageHero({
-  eyebrow,
   title,
   lead,
   photo,
-  photoAlt,
+  photoAlt = "",
+  photoPosition,
+  visual,
   crumbs,
   crumbsLabel,
+  variant = "page",
   children,
 }: {
-  eyebrow: string;
   title: string;
   lead: string;
-  photo: PhotoName;
-  photoAlt: string;
+  photo?: PhotoName;
+  photoAlt?: string;
+  photoPosition?: string;
+  visual?: ReactNode;
   crumbs: Crumb[];
   crumbsLabel: string;
+  variant?: "page" | "article";
   children?: ReactNode;
 }) {
+  const article = variant === "article";
+  const aside =
+    !article && (visual ?? (photo && <Figure name={photo} alt={photoAlt} ratio="hero" position={photoPosition} preload sizes="(min-width: 1024px) 30vw, 100vw" />));
   return (
-    <section className="relative isolate overflow-hidden text-white">
-      <MotionBackdrop />
+    <section className="bg-white pt-28 sm:pt-32 lg:pt-36">
       <JsonLd data={breadcrumbSchema(crumbs)} />
-      <Container className="grid items-center gap-12 pb-20 pt-32 md:grid-cols-[1.25fr_1fr] md:pb-24 md:pt-40 lg:gap-20">
-        <div>
+      <Container>
+        <div className={article ? "mx-auto max-w-[42rem]" : ""}>
           <nav aria-label={crumbsLabel}>
-            <ol className="flex flex-wrap items-center gap-1.5 text-sm text-white/70">
+            <ol className="flex flex-wrap items-center gap-2 text-small font-medium text-muted">
               {crumbs.map((crumb, i) => (
-                <li key={crumb.href} className="flex items-center gap-1.5">
-                  {i > 0 && <Icon name="arrowRight" className="size-3.5 text-white/40" />}
+                <li key={crumb.href} className={`flex items-center gap-2 ${i === crumbs.length - 1 && crumbs.length > 2 ? "max-sm:hidden" : ""}`}>
+                  {i > 0 && (
+                    <span aria-hidden="true" className="text-muted/60">
+                      /
+                    </span>
+                  )}
                   {i === crumbs.length - 1 ? (
-                    <span aria-current="page" className="text-white">
+                    <span aria-current="page" className="text-ink">
                       {crumb.name}
                     </span>
                   ) : (
-                    <Link href={crumb.href} className="hover:text-white hover:underline">
+                    <Link href={crumb.href} className="u-link hover:text-ink">
                       {crumb.name}
                     </Link>
                   )}
@@ -54,14 +66,15 @@ export function PageHero({
               ))}
             </ol>
           </nav>
-          <div className="mt-8">
-            <Eyebrow tone="light">{eyebrow}</Eyebrow>
+          <div className={`grid gap-10 border-b border-line pb-14 pt-10 lg:gap-8 lg:pb-20 lg:pt-12 ${aside ? "lg:grid-cols-12 lg:items-center" : ""}`}>
+            <div className={aside ? "lg:col-span-7" : article ? "" : "lg:max-w-[52rem]"}>
+              <h1 className="max-w-[18ch] font-display text-[2.25rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-h1">{title}</h1>
+              <p className="mt-6 max-w-[36rem] text-lead text-ink-soft">{lead}</p>
+              {children && <div className="mt-10 flex flex-wrap items-center gap-3">{children}</div>}
+            </div>
+            {aside && <div className="lg:col-span-4 lg:col-start-9">{aside}</div>}
           </div>
-          <h1 className="mt-5 font-display text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">{title}</h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/80 sm:text-xl">{lead}</p>
-          {children && <div className="mt-9 flex flex-wrap gap-3">{children}</div>}
         </div>
-        <PhotoCircle photos={[photo]} alts={[photoAlt]} preload className="mx-auto w-full max-w-[18rem] sm:max-w-sm md:max-w-md" />
       </Container>
     </section>
   );

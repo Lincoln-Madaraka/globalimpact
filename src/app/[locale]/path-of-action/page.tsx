@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { FeatureCard, ProjectCard } from "@/components/cards";
+import { CardGrid, DetailCard, ProjectCard } from "@/components/cards";
 import { CtaBanner } from "@/components/CtaBanner";
-import type { IconName } from "@/components/Icon";
 import { JsonLd } from "@/components/JsonLd";
-import { MotionBackdrop } from "@/components/MotionBackdrop";
 import { PageHero } from "@/components/PageHero";
-import { Photo } from "@/components/Photo";
 import { Steps } from "@/components/Steps";
-import { Container, SectionHeading, TextLink } from "@/components/ui";
+import { Container, Section, SectionHeading, TextLink } from "@/components/ui";
 import { getDictionary } from "@/i18n";
 import { isLocale } from "@/i18n/config";
 import { localePath } from "@/config/routes";
@@ -22,10 +19,6 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/path-of-
   return pageMetadata({ locale, path: "/path-of-action", title: action.metaTitle, description: action.metaDescription });
 }
 
-const themeIcons: IconName[] = ["mapPin", "handshake", "trendingUp", "rocket", "users", "barChart"];
-const mechanismIcons: IconName[] = ["home", "sprout", "search", "network", "target"];
-const cycleIcons: IconName[] = ["search", "compass", "handshake", "rocket", "barChart"];
-
 export default async function PathOfActionPage({ params }: PageProps<"/[locale]/path-of-action">) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
@@ -37,11 +30,10 @@ export default async function PathOfActionPage({ params }: PageProps<"/[locale]/
     <>
       <JsonLd data={webPageSchema({ locale, path: "/path-of-action", name: t.metaTitle, description: t.metaDescription })} />
       <PageHero
-        eyebrow={t.hero.eyebrow}
         title={t.hero.title}
         lead={t.hero.lead}
-        photo="consultation"
-        photoAlt={dict.photos.consultation}
+        photo="woven-hands"
+        photoAlt={dict.photos["woven-hands"]}
         crumbs={[
           { name: dict.nav.home, href: path("") },
           { name: dict.nav.pathOfAction, href: path("/path-of-action") },
@@ -49,79 +41,85 @@ export default async function PathOfActionPage({ params }: PageProps<"/[locale]/
         crumbsLabel={dict.nav.breadcrumb}
       />
 
-      <section className="py-24 sm:py-28">
+      {/* Intro and the six commitments */}
+      <Section tone="white">
         <Container>
-          <SectionHeading title={t.intro.title} lead={t.intro.text} />
-          <h3 className="reveal mt-16 text-xs font-bold uppercase tracking-[0.18em] text-brand-blue">{t.themes.eyebrow}</h3>
-          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {t.themes.items.map((item, i) => (
-              <FeatureCard key={item.title} icon={themeIcons[i]} title={item.title} text={item.text} />
+          <div className="reveal grid gap-6 lg:grid-cols-12 lg:gap-8">
+            <h2 className="font-display text-h2 text-ink lg:col-span-5">{t.intro.title}</h2>
+            <p className="text-lead text-ink-soft lg:col-span-6 lg:col-start-7">{t.intro.text}</p>
+          </div>
+          <h3 className="reveal mt-16 border-t border-line pt-4 font-display text-xl font-semibold text-ink">{t.themes.title}</h3>
+          <CardGrid className="mt-8 sm:grid-cols-2 lg:grid-cols-3">
+            {t.themes.items.map((item) => (
+              <DetailCard
+                key={item.title}
+                title={item.title}
+                teaser={item.text}
+                body={<p className="text-lead">{item.text}</p>}
+                tone="white"
+                moreLabel={dict.common.readMore}
+                closeLabel={dict.common.close}
+              />
+            ))}
+          </CardGrid>
+        </Container>
+      </Section>
+
+      {/* Mechanisms */}
+      <Section tone="ivory">
+        <Container>
+          <SectionHeading title={t.mechanisms.title} />
+          <div className="mt-10 grid gap-x-12 gap-y-10 lg:mt-12 lg:grid-cols-2">
+            {t.mechanisms.items.map((item) => (
+              <div key={item.title} className="reveal border-t border-line pt-6">
+                <h3 className="font-display text-xl font-semibold text-ink">{item.title}</h3>
+                <p className="mt-3 text-ink-soft">{item.text}</p>
+              </div>
             ))}
           </div>
         </Container>
-      </section>
+      </Section>
 
-      <section className="bg-sand py-24 sm:py-28">
-        <Container className="grid gap-14 lg:grid-cols-[1fr_1.3fr] lg:gap-20">
-          <div>
-            <SectionHeading eyebrow={t.mechanisms.eyebrow} title={t.mechanisms.title} />
-            <div className="reveal relative mt-10 hidden aspect-[3/4] max-w-sm overflow-hidden rounded-[2.5rem] shadow-2xl shadow-brand-blue/15 lg:block">
-              <Photo name="compliance" alt={dict.photos.compliance} />
-            </div>
-          </div>
-          <div className="grid gap-5">
-            {t.mechanisms.items.map((item, i) => (
-              <FeatureCard key={item.title} icon={mechanismIcons[i]} title={item.title} text={item.text} tone="sand" />
-            ))}
+      {/* The project cycle */}
+      <Section tone="navy">
+        <Container>
+          <SectionHeading title={t.cycle.title} tone="light" />
+          <div className="mt-10 lg:mt-12">
+            <Steps steps={t.cycle.steps} tone="light" />
           </div>
         </Container>
-      </section>
+      </Section>
 
-      <section className="relative isolate overflow-hidden py-24 text-white sm:py-28">
-        <MotionBackdrop />
+      {/* Stories of impact */}
+      <Section tone="white">
         <Container>
-          <SectionHeading eyebrow={t.cycle.eyebrow} title={t.cycle.title} tone="light" />
-          <div className="mt-16">
-            <Steps steps={t.cycle.steps} icons={cycleIcons} tone="light" />
-          </div>
-        </Container>
-      </section>
-
-      <section className="py-24 sm:py-28">
-        <Container>
-          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-            <SectionHeading eyebrow={dict.home.stories.eyebrow} title={dict.home.stories.title} />
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <SectionHeading title={dict.home.stories.title} />
             <TextLink href={path("/impact")} className="shrink-0">
               {dict.home.stories.link}
             </TextLink>
           </div>
-          <div className="mt-14 grid gap-6 md:grid-cols-3">
+          <div className="reveal mt-10 grid gap-10 md:grid-cols-3 lg:mt-12">
             {dict.impact.projects.map((project) => (
               <ProjectCard
                 key={project.id}
+                project={project}
                 href={`${path("/impact")}#${project.id}`}
-                image={project.image}
-                imageAlt={dict.photos[project.image]}
-                title={project.title}
-                place={project.place}
-                text={project.approach}
-                status={project.status}
+                labels={dict.common}
+                linkLabel={dict.common.seeFullStory}
               />
             ))}
           </div>
         </Container>
-      </section>
+      </Section>
 
       <CtaBanner
-        eyebrow={dict.cta.invest}
         title={t.invest.title}
         text={t.invest.text}
         actions={[
           { label: dict.cta.invest, href: `${path("/contact")}?topic=investment` },
           { label: dict.cta.partner, href: `${path("/contact")}?topic=partnership` },
         ]}
-        photo="handshake"
-        photoAlt={dict.photos.handshake}
       />
     </>
   );

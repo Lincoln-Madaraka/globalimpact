@@ -11,18 +11,6 @@
     "width": 736,
     "height": 1104
   },
-  "community": {
-    "width": 527,
-    "height": 524
-  },
-  "office": {
-    "width": 736,
-    "height": 1313
-  },
-  "contact": {
-    "width": 736,
-    "height": 1308
-  },
   "handshake": {
     "width": 627,
     "height": 1000
@@ -31,12 +19,56 @@
     "width": 736,
     "height": 736
   },
-  "compliance": {
-    "width": 720,
-    "height": 1280
+  "desk-globe": {
+    "width": 736,
+    "height": 1104
+  },
+  "hands": {
+    "width": 408,
+    "height": 728
   },
   "earth": {
     "width": 1400,
     "height": 1400
+  },
+  "bonfire": {
+    "width": 1600,
+    "height": 1200
+  },
+  "kogi-elders": {
+    "width": 800,
+    "height": 600
+  },
+  "gathering": {
+    "width": 640,
+    "height": 480
+  },
+  "fire-circle": {
+    "width": 640,
+    "height": 480
+  },
+  "womens-circle": {
+    "width": 1200,
+    "height": 900
+  },
+  "elder": {
+    "width": 629,
+    "height": 1280
+  },
+  "salon": {
+    "width": 1600,
+    "height": 815
+  },
+  "rita": {
+    "width": 530,
+    "height": 640
+  },
+  "woven-hands": {
+    "width": 1600,
+    "height": 874
+  },
+  "rice-farmers": {
+    "width": 800,
+    "height": 524
   }
 }
