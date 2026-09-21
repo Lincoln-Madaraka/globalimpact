@@ -2,8 +2,6 @@ import type { CSSProperties } from "react";
 import { geoContains } from "d3-geo";
 import { africaOutline, africaProjection } from "@/lib/africa-geo";
 
-const WIDTH = 560;
-const HEIGHT = 620;
 const STROKE = 9;
 const RING_STEP = 15;
 const COLORS = ["#C2412D", "#E8942F", "#3F6B35"];
@@ -29,7 +27,7 @@ type Stroke = { d: string; color: string; length: number };
 let cachedStrokes: Stroke[] | undefined;
 
 function drawStrokes(): Stroke[] {
-  const { projection } = africaProjection(WIDTH, HEIGHT);
+  const { projection } = africaProjection(560);
   const random = mulberry32(20260921);
   const centres = CENTRES.map((c) => projection(c)!);
   const inAfrica = (x: number, y: number) => {
@@ -88,8 +86,9 @@ function drawStrokes(): Stroke[] {
  */
 export function AfricaLinesMap({ label, className = "" }: { label: string; className?: string }) {
   const strokes = (cachedStrokes ??= drawStrokes());
+  const { width, height } = africaProjection(560);
   return (
-    <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} role="img" aria-label={label} className={`draw-in h-auto w-full ${className}`}>
+    <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label} className={`draw-in h-auto w-full ${className}`}>
       <g fill="none" strokeWidth={STROKE} strokeLinecap="round">
         {strokes.map((s, i) => (
           <path key={i} d={s.d} stroke={s.color} style={{ "--len": s.length } as CSSProperties} />

@@ -33,7 +33,8 @@ export default async function AfricaPage({ params }: PageProps<"/[locale]/africa
       <PageHero
         title={t.hero.title}
         lead={t.hero.lead}
-        visual={<AfricaFlagMap label={t.map.label} caption={t.map.caption} className="mx-auto w-full max-w-md lg:max-w-none" />}
+        wideVisual
+        visual={<AfricaFlagMap label={t.map.label} caption={t.map.caption} className="mx-auto w-full max-w-lg lg:max-w-none" />}
         crumbs={[
           { name: dict.nav.home, href: path("") },
           { name: dict.nav.africa, href: path("/africa") },

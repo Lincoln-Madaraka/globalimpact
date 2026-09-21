@@ -1,6 +1,6 @@
 import "server-only";
 import { geoMercator, geoPath, type GeoProjection } from "d3-geo";
-import type { Feature, FeatureCollection, Geometry, MultiPolygon } from "geojson";
+import type { Feature, FeatureCollection, Geometry, MultiPoint, MultiPolygon } from "geojson";
 import { feature, merge } from "topojson-client";
 import type { GeometryCollection, MultiPolygon as TopoMultiPolygon, Polygon as TopoPolygon, Topology } from "topojson-specification";
 import world from "world-atlas/countries-50m.json";
@@ -28,10 +28,16 @@ export const africaOutline: Feature<MultiPolygon> = {
   geometry: merge(topology, africanGeometries as Array<TopoPolygon | TopoMultiPolygon>),
 };
 
-/** A Mercator projection fitted to Africa at the given size, with its path generator. */
-export function africaProjection(width: number, height: number): { projection: GeoProjection; path: ReturnType<typeof geoPath> } {
-  const projection = geoMercator().fitSize([width, height], { type: "FeatureCollection", features: africaCountries });
-  return { projection, path: geoPath(projection).digits(1) };
+// The frame both maps are fitted to: the continent plus Cabo Verde, Seychelles and Mauritius.
+// Remote islands outside it (e.g. South Africa's Prince Edward Islands) fall outside the drawing.
+const extent: MultiPoint = { type: "MultiPoint", coordinates: [[-26, 38], [58, 38], [58, -36], [-26, -36]] };
+
+/** A Mercator projection fitted to Africa at the given width; the height follows the continent's shape. */
+export function africaProjection(width: number): { projection: GeoProjection; path: ReturnType<typeof geoPath>; width: number; height: number } {
+  const projection = geoMercator().fitWidth(width, extent);
+  const path = geoPath(projection).digits(1);
+  const [[, y0], [, y1]] = path.bounds(extent);
+  return { projection, path, width, height: Math.ceil(y1 - y0) };
 }
 
 /** Flag code and display name for a Natural Earth feature. */
