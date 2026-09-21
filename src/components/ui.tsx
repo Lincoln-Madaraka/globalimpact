@@ -6,61 +6,69 @@ export function Container({ className = "", children }: { className?: string; ch
   return <div className={`mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8 ${className}`}>{children}</div>;
 }
 
-export function Eyebrow({ children, tone = "dark" }: { children: ReactNode; tone?: "dark" | "light" }) {
+const sectionTones = {
+  white: "bg-white",
+  ivory: "bg-ivory",
+  navy: "on-dark bg-navy-900 text-white",
+};
+
+/**
+ * A page section. Backgrounds alternate white/ivory in a fixed order;
+ * `divider` adds a hairline when two sections of the same colour meet.
+ */
+export function Section({
+  tone = "white",
+  divider = false,
+  id,
+  className = "",
+  children,
+}: {
+  tone?: keyof typeof sectionTones;
+  divider?: boolean;
+  id?: string;
+  className?: string;
+  children: ReactNode;
+}) {
   return (
-    <p
-      className={`inline-flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.18em] ${
-        tone === "light" ? "text-white/85" : "text-brand-blue"
-      }`}
-    >
-      <span className={`h-px w-8 shrink-0 ${tone === "light" ? "bg-white/60" : "bg-brand-blue/50"}`} aria-hidden="true" />
+    <section id={id} className={`py-16 sm:py-20 lg:py-24 ${sectionTones[tone]} ${divider ? "border-t border-line" : ""} ${className}`}>
       {children}
-    </p>
+    </section>
   );
 }
 
 export function SectionHeading({
-  eyebrow,
   title,
   lead,
-  align = "left",
   tone = "dark",
   className = "",
 }: {
-  eyebrow?: string;
   title: string;
   lead?: string;
-  align?: "left" | "center";
   tone?: "dark" | "light";
   className?: string;
 }) {
-  const centered = align === "center";
+  const light = tone === "light";
   return (
-    <div className={`reveal max-w-3xl ${centered ? "mx-auto text-center" : ""} ${className}`}>
-      {eyebrow && <Eyebrow tone={tone}>{eyebrow}</Eyebrow>}
-      <h2
-        className={`mt-4 font-display text-3xl font-bold tracking-tight sm:text-4xl lg:text-[2.75rem] lg:leading-[1.12] ${
-          tone === "light" ? "text-white" : "text-ink"
-        }`}
-      >
-        {title}
-      </h2>
-      {lead && (
-        <p className={`mt-5 text-lg leading-relaxed ${tone === "light" ? "text-white/80" : "text-ink-soft"}`}>{lead}</p>
-      )}
+    <div className={`reveal max-w-3xl ${className}`}>
+      <h2 className={`font-display text-h2 ${light ? "text-white" : "text-ink"}`}>{title}</h2>
+      {lead && <p className={`mt-5 max-w-[40rem] text-lead ${light ? "text-white/72" : "text-ink-soft"}`}>{lead}</p>}
     </div>
   );
 }
 
-const buttonStyles = {
-  primary: "bg-brand-red-700 text-white shadow-lg shadow-brand-red/25 hover:bg-brand-red-800",
-  blue: "bg-brand-blue text-white shadow-lg shadow-brand-blue/20 hover:bg-brand-blue-700",
-  white: "bg-white text-brand-blue shadow-lg shadow-black/10 hover:bg-brand-blue-50",
-  outlineLight: "border border-white/35 text-white hover:border-white hover:bg-white/10",
-  outlineDark: "border border-brand-blue/25 text-brand-blue hover:border-brand-blue hover:bg-brand-blue-50",
+const buttonVariants = {
+  primary: "bg-navy-900 text-white hover:bg-navy-800 active:bg-navy-950",
+  outlineDark: "border border-ink text-ink hover:bg-ink hover:text-white",
+  white: "bg-white text-navy-900 hover:bg-ivory",
+  outlineLight: "border border-white/55 text-white hover:bg-white hover:text-navy-900",
 };
 
-export type ButtonVariant = keyof typeof buttonStyles;
+export type ButtonVariant = keyof typeof buttonVariants;
+
+export const buttonClass = (variant: ButtonVariant = "primary", size: "sm" | "md" = "md") =>
+  `group inline-flex items-center justify-center gap-2.5 rounded-[2px] font-sans font-semibold tracking-[0.005em] transition-colors duration-200 ease-quiet ${
+    size === "sm" ? "h-10 px-4.5 text-sm" : "h-12 px-6 text-[0.9375rem]"
+  } ${buttonVariants[variant]}`;
 
 export function ButtonLink({
   href,
@@ -79,12 +87,11 @@ export function ButtonLink({
   className?: string;
   onClick?: () => void;
 }) {
-  const sizing = size === "sm" ? "px-5 py-2.5 text-sm" : "px-6 py-3.5 text-[0.95rem]";
-  const classes = `group inline-flex items-center justify-center gap-2 rounded-full font-bold transition-all duration-200 hover:-translate-y-0.5 ${sizing} ${buttonStyles[variant]} ${className}`;
+  const classes = `${buttonClass(variant, size)} ${className}`;
   const content = (
     <>
       {children}
-      {icon && <Icon name={icon} className="size-4.5 transition-transform group-hover:translate-x-0.5" />}
+      {icon && <Icon name={icon} className="size-4 transition-transform duration-200 group-hover:translate-x-[3px]" />}
     </>
   );
   return href.startsWith("/") ? (
@@ -98,41 +105,43 @@ export function ButtonLink({
   );
 }
 
-export function TextLink({ href, children, className = "" }: { href: string; children: ReactNode; className?: string }) {
+export function TextLink({
+  href,
+  children,
+  tone = "dark",
+  className = "",
+}: {
+  href: string;
+  children: ReactNode;
+  tone?: "dark" | "light";
+  className?: string;
+}) {
   return (
     <Link
       href={href}
-      className={`group inline-flex items-center gap-1.5 font-bold text-brand-blue underline-offset-4 hover:underline ${className}`}
+      className={`group inline-flex items-center gap-2 font-semibold ${tone === "light" ? "text-white" : "text-ink"} ${className}`}
     >
-      {children}
-      <Icon name="arrowRight" className="size-4 transition-transform group-hover:translate-x-1" />
+      <span className="u-link">{children}</span>
+      <Icon name="arrowRight" className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
     </Link>
   );
 }
 
 export function CheckList({ items, tone = "dark", className = "" }: { items: string[]; tone?: "dark" | "light"; className?: string }) {
+  const light = tone === "light";
   return (
-    <ul className={`space-y-3.5 ${className}`}>
+    <ul className={`space-y-3 ${className}`}>
       {items.map((item) => (
         <li key={item} className="flex gap-3">
-          <span
-            className={`mt-0.5 grid size-6 shrink-0 place-items-center rounded-full ${
-              tone === "light" ? "bg-white/15 text-white" : "bg-brand-green-50 text-brand-green"
-            }`}
-          >
-            <Icon name="check" className="size-3.5" />
-          </span>
-          <span className={tone === "light" ? "text-white/90" : "text-ink"}>{item}</span>
+          <Icon name="check" className={`mt-1 size-4 shrink-0 ${light ? "text-white/85" : "text-navy-900"}`} />
+          <span className={light ? "text-white/85" : "text-ink"}>{item}</span>
         </li>
       ))}
     </ul>
   );
 }
 
-export function IconBadge({ name, className = "" }: { name: IconName; className?: string }) {
-  return (
-    <span className={`grid size-12 shrink-0 place-items-center rounded-2xl ${className}`}>
-      <Icon name={name} className="size-6" />
-    </span>
-  );
+/** Small muted line of metadata, e.g. "Ongoing · Jordão, Acre". */
+export function Meta({ children, tone = "dark", className = "" }: { children: ReactNode; tone?: "dark" | "light"; className?: string }) {
+  return <p className={`text-small font-medium ${tone === "light" ? "text-white/60" : "text-muted"} ${className}`}>{children}</p>;
 }

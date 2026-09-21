@@ -1,32 +1,61 @@
 @import "tailwindcss";
 
+/* "Paper, Ink & Earth": white/ivory paper, near-black ink, one deep navy. */
 @theme {
-  /* Brand colours sampled from the Global Impact Alliance logo */
-  --color-brand-blue: #0038a5;
-  --color-brand-blue-700: #002a7d;
-  --color-brand-blue-50: #eef3fc;
-  --color-brand-green: #018577;
-  --color-brand-green-700: #016a5f;
-  --color-brand-green-50: #e7f5f2;
-  --color-brand-red: #eb2839;
-  --color-brand-red-700: #c81e2e;
-  --color-brand-red-800: #a51726;
-  --color-brand-red-50: #fdeced;
-
-  --color-ink: #0b1b3f;
-  --color-ink-soft: #46526d;
-  --color-navy: #061640;
-  --color-mist: #f4f7fb;
-  --color-sand: #f7f2ea;
-  --color-line: #e2e8f2;
+  --color-ink: #0e1116; /* headings, primary text */
+  --color-ink-soft: #464b54; /* body, leads */
+  --color-muted: #646973; /* meta, crumbs, numerals (never below 13px) */
+  --color-ivory: #f6f4ef; /* alternate sections */
+  --color-stone: #e9e6df; /* image placeholder */
+  --color-line: #ddd9d0; /* 1px hairlines */
+  --color-field: #868b94; /* input borders */
+  --color-night: #05070c; /* home hero, footer, 404 */
+  --color-navy-950: #060d1f; /* mobile menu */
+  --color-navy-900: #0a1a3a; /* THE navy: header, primary buttons, one band per page */
+  --color-navy-800: #142a56; /* primary hover */
+  --color-brand-blue: #0038a5; /* focus ring on light + Path of Wisdom rule */
+  --color-brand-green-700: #016a5f; /* Path of Action rule + form success */
 
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: var(--font-montserrat), var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+
+  --text-display: clamp(2.75rem, 1.5rem + 4.4vw, 5.75rem);
+  --text-display--line-height: 0.98;
+  --text-display--letter-spacing: -0.035em;
+  --text-display--font-weight: 600;
+  --text-h1: clamp(2.5rem, 1.75rem + 2.6vw, 4.25rem);
+  --text-h1--line-height: 1.04;
+  --text-h1--letter-spacing: -0.03em;
+  --text-h1--font-weight: 600;
+  --text-h2: clamp(2rem, 1.55rem + 1.6vw, 3.25rem);
+  --text-h2--line-height: 1.08;
+  --text-h2--letter-spacing: -0.025em;
+  --text-h2--font-weight: 600;
+  --text-statement: clamp(1.5rem, 1.2rem + 1vw, 2.125rem);
+  --text-statement--line-height: 1.25;
+  --text-statement--letter-spacing: -0.015em;
+  --text-statement--font-weight: 500;
+  --text-h3: 1.375rem;
+  --text-h3--line-height: 1.3;
+  --text-h3--letter-spacing: -0.01em;
+  --text-h3--font-weight: 600;
+  --text-lead: clamp(1.125rem, 1.03rem + 0.35vw, 1.3125rem);
+  --text-lead--line-height: 1.6;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.7;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.5;
+  --text-index: 0.8125rem;
+  --text-index--letter-spacing: 0.04em;
+  --text-index--font-weight: 500;
+
+  --ease-quiet: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
     -webkit-text-size-adjust: 100%;
   }
 
@@ -34,146 +63,143 @@
     background: #ffffff;
     color: var(--color-ink);
     font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
     -webkit-font-smoothing: antialiased;
   }
 
   ::selection {
-    background: var(--color-brand-blue);
+    background: var(--color-navy-900);
     color: #fff;
   }
 
   :focus-visible {
-    outline: 3px solid var(--color-brand-red);
+    outline: 2px solid var(--color-brand-blue);
     outline-offset: 3px;
-    border-radius: 6px;
+    border-radius: 2px;
   }
 
-  h1, h2, h3 {
+  .on-dark :focus-visible {
+    outline-color: #fff;
+  }
+
+  h1,
+  h2,
+  h3 {
     text-wrap: balance;
   }
+
+  p {
+    text-wrap: pretty;
+  }
 }
 
-/* ---------- Motion background ---------- */
-
-.motion-backdrop {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  z-index: -1;
-  background:
-    radial-gradient(120% 80% at 0% 0%, #0a3bb0 0%, transparent 60%),
-    linear-gradient(160deg, #0038a5 0%, #0a2a7a 55%, #061640 100%);
+/* Deep navy glass header. */
+.header-glass {
+  background: rgb(10 26 58 / 0.92);
+  -webkit-backdrop-filter: blur(16px) saturate(140%) brightness(0.4);
+  backdrop-filter: blur(16px) saturate(140%) brightness(0.4);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .header-glass {
+    background: var(--color-navy-900);
+  }
 }
 
-.motion-backdrop .orb {
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(90px);
-  will-change: transform;
+/* Links that draw a slow underline on hover and focus. */
+.u-link {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 0.5s var(--ease-quiet), color 0.2s;
+}
+.u-link:hover,
+.u-link:focus-visible,
+.u-link[aria-current="page"] {
+  background-size: 100% 1px;
 }
 
-.motion-backdrop .orb-a {
-  width: 48vmax;
-  height: 48vmax;
-  top: -18vmax;
-  left: -14vmax;
-  background: #1f5fe0;
-  opacity: 0.45;
-  animation: drift-a 26s ease-in-out infinite alternate;
-}
-
-.motion-backdrop .orb-b {
-  width: 42vmax;
-  height: 42vmax;
-  bottom: -20vmax;
-  right: -12vmax;
-  background: #0038a5;
-  opacity: 0.55;
-  animation: drift-b 32s ease-in-out infinite alternate;
-}
-
-.motion-backdrop .orb-c {
-  width: 24vmax;
-  height: 24vmax;
-  top: 35%;
-  left: 40%;
-  background: #6f9cf5;
-  opacity: 0.25;
-  animation: drift-c 38s ease-in-out infinite alternate;
-}
-
-.motion-backdrop .dots {
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(rgb(255 255 255 / 0.09) 1px, transparent 1px);
-  background-size: 26px 26px;
-  mask-image: linear-gradient(to bottom, black 0%, transparent 85%);
-}
-
-@keyframes drift-a {
-  to { transform: translate3d(14vmax, 9vmax, 0) scale(1.12); }
-}
-@keyframes drift-b {
-  to { transform: translate3d(-12vmax, -8vmax, 0) scale(1.08); }
-}
-@keyframes drift-c {
-  0% { transform: translate3d(-8vmax, 4vmax, 0) scale(0.9); }
-  100% { transform: translate3d(10vmax, -6vmax, 0) scale(1.15); }
-}
-
-/* Crossfading Ken Burns slideshow (5 slides × 5s) */
-.kb-slide {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  animation: kb-fade 25s linear infinite;
-}
-.kb-slide img {
-  animation: kb-zoom 25s linear infinite;
-  animation-delay: inherit;
-}
-@keyframes kb-fade {
-  0% { opacity: 1; }
-  16% { opacity: 1; }
-  20% { opacity: 0; }
-  96% { opacity: 0; }
-  100% { opacity: 1; }
-}
-@keyframes kb-zoom {
-  0% { transform: scale(1.04); }
-  20% { transform: scale(1.16) translate3d(-1.5%, -1.5%, 0); }
-  100% { transform: scale(1.04); }
-}
-
-.ken-burns {
-  animation: ken-burns 22s ease-in-out infinite alternate;
-}
-@keyframes ken-burns {
-  from { transform: scale(1.02); }
-  to { transform: scale(1.14) translate3d(-2%, -1%, 0); }
-}
-
-/* Scroll-driven reveal where supported; content is always visible otherwise */
+/* Scroll-driven reveal where supported; content is always visible otherwise. */
 @supports (animation-timeline: view()) {
   .reveal {
     animation: reveal linear both;
     animation-timeline: view();
-    animation-range: entry 0% cover 22%;
+    animation-range: entry 5% cover 20%;
   }
 }
 @keyframes reveal {
-  from { opacity: 0; transform: translate3d(0, 28px, 0); }
-  to { opacity: 1; transform: none; }
+  from {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Swirling-line Africa: strokes draw in as the map scrolls into view. */
+@supports (animation-timeline: view()) {
+  .draw-in path {
+    stroke-dasharray: var(--len) var(--len);
+    animation: draw-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 45%;
+  }
+}
+@keyframes draw-in {
+  from {
+    stroke-dashoffset: var(--len);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Native <dialog> modal. */
+dialog.card-modal {
+  opacity: 0;
+  transform: translate3d(0, 12px, 0) scale(0.985);
+  transition:
+    opacity 0.3s var(--ease-quiet),
+    transform 0.3s var(--ease-quiet),
+    overlay 0.3s allow-discrete,
+    display 0.3s allow-discrete;
+}
+dialog.card-modal[open] {
+  opacity: 1;
+  transform: none;
+}
+@starting-style {
+  dialog.card-modal[open] {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) scale(0.985);
+  }
+}
+dialog.card-modal::backdrop {
+  background: rgb(5 7 12 / 0);
+  transition:
+    background 0.3s var(--ease-quiet),
+    overlay 0.3s allow-discrete,
+    display 0.3s allow-discrete;
+}
+dialog.card-modal[open]::backdrop {
+  background: rgb(5 7 12 / 0.6);
+}
+@starting-style {
+  dialog.card-modal[open]::backdrop {
+    background: rgb(5 7 12 / 0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .motion-backdrop .orb,
-  .ken-burns,
-  .kb-slide img,
-  .reveal {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal,
+  .draw-in path {
     animation: none !important;
   }
-  .kb-slide { animation: none; }
-  .kb-slide:first-child { opacity: 1; }
+  dialog.card-modal,
+  dialog.card-modal::backdrop {
+    transition: none;
+  }
 }
