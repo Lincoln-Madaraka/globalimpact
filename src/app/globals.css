@@ -106,6 +106,13 @@
   }
 }
 
+/* Home hero: deep navy at the top, easing into a warm dusk horizon at the bottom. */
+.bg-dusk {
+  background:
+    radial-gradient(130% 55% at 72% 100%, rgb(222 139 84 / 0.5) 0%, rgb(222 139 84 / 0) 62%),
+    linear-gradient(180deg, #0a1a3a 0%, #0f1d44 38%, #25244a 62%, #4a2f4c 80%, #7a4448 93%, #9a5646 100%);
+}
+
 /* Links that draw a slow underline on hover and focus. */
 .u-link {
   background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;

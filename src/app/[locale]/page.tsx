@@ -48,7 +48,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
   return (
     <>
       {/* Hero */}
-      <section className="on-dark relative isolate overflow-hidden bg-night text-white">
+      <section className="on-dark bg-dusk relative isolate overflow-hidden text-white">
         <Container className="pointer-events-none relative z-10 pt-32 lg:flex lg:min-h-[max(42rem,100svh)] lg:items-center lg:pb-16 lg:pt-24">
           <div className="pointer-events-auto max-w-[36rem] lg:max-w-[30rem] xl:max-w-[38rem]">
             <h1 className="max-w-[12ch] font-display text-display text-white">
