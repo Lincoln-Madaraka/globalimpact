@@ -4,7 +4,7 @@ import { Photo } from "./Photo";
 type Slides = [PhotoName, PhotoName, PhotoName, PhotoName, PhotoName];
 
 /**
- * A photo inside a circle (echoing the logo) with orbiting brand-coloured dots.
+ * A photo inside a circle, echoing the logo.
  * Pass five photos to get a crossfading Ken Burns slideshow (timed in globals.css).
  */
 export function PhotoCircle({
@@ -22,11 +22,6 @@ export function PhotoCircle({
 }) {
   return (
     <div className={`relative aspect-square ${className}`}>
-      <div className={`orbit -inset-[7%] ${tone === "light" ? "orbit-light" : ""}`} aria-hidden="true" />
-      <div
-        className={`orbit orbit-reverse -inset-[15%] hidden sm:block ${tone === "light" ? "orbit-light" : ""}`}
-        aria-hidden="true"
-      />
       <div
         className={`relative size-full overflow-hidden rounded-full shadow-2xl ${
           tone === "light" ? "shadow-brand-blue/20 ring-8 ring-white" : "shadow-black/40 ring-[10px] ring-white/10"

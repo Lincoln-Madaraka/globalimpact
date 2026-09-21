@@ -13,7 +13,7 @@ export function Eyebrow({ children, tone = "dark" }: { children: ReactNode; tone
         tone === "light" ? "text-white/85" : "text-brand-blue"
       }`}
     >
-      <span className="size-2 shrink-0 rounded-full bg-brand-red" aria-hidden="true" />
+      <span className={`h-px w-8 shrink-0 ${tone === "light" ? "bg-white/60" : "bg-brand-blue/50"}`} aria-hidden="true" />
       {children}
     </p>
   );
@@ -39,7 +39,7 @@ export function SectionHeading({
     <div className={`reveal max-w-3xl ${centered ? "mx-auto text-center" : ""} ${className}`}>
       {eyebrow && <Eyebrow tone={tone}>{eyebrow}</Eyebrow>}
       <h2
-        className={`mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1] ${
+        className={`mt-4 font-display text-3xl font-bold tracking-tight sm:text-4xl lg:text-[2.75rem] lg:leading-[1.12] ${
           tone === "light" ? "text-white" : "text-ink"
         }`}
       >
@@ -69,6 +69,7 @@ export function ButtonLink({
   size = "md",
   icon = "arrowRight",
   className = "",
+  onClick,
 }: {
   href: string;
   children: ReactNode;
@@ -76,6 +77,7 @@ export function ButtonLink({
   size?: "sm" | "md";
   icon?: IconName | null;
   className?: string;
+  onClick?: () => void;
 }) {
   const sizing = size === "sm" ? "px-5 py-2.5 text-sm" : "px-6 py-3.5 text-[0.95rem]";
   const classes = `group inline-flex items-center justify-center gap-2 rounded-full font-bold transition-all duration-200 hover:-translate-y-0.5 ${sizing} ${buttonStyles[variant]} ${className}`;
@@ -86,11 +88,11 @@ export function ButtonLink({
     </>
   );
   return href.startsWith("/") ? (
-    <Link href={href} className={classes}>
+    <Link href={href} className={classes} onClick={onClick}>
       {content}
     </Link>
   ) : (
-    <a href={href} className={classes}>
+    <a href={href} className={classes} onClick={onClick}>
       {content}
     </a>
   );

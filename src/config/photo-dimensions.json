@@ -35,8 +35,8 @@
     "width": 720,
     "height": 1280
   },
-  "environmental": {
-    "width": 600,
-    "height": 600
+  "earth": {
+    "width": 1400,
+    "height": 1401
   }
 }

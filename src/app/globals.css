@@ -17,9 +17,11 @@
   --color-ink-soft: #46526d;
   --color-navy: #061640;
   --color-mist: #f4f7fb;
+  --color-sand: #f7f2ea;
   --color-line: #e2e8f2;
 
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-montserrat), var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -100,16 +102,6 @@
   animation: drift-c 38s ease-in-out infinite alternate;
 }
 
-.motion-backdrop .spark {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border-radius: 9999px;
-  background: #eb2839;
-  box-shadow: 0 0 18px 4px rgb(235 40 57 / 0.55);
-  animation: float 9s ease-in-out infinite;
-}
-
 .motion-backdrop .dots {
   position: absolute;
   inset: 0;
@@ -127,52 +119,6 @@
 @keyframes drift-c {
   0% { transform: translate3d(-8vmax, 4vmax, 0) scale(0.9); }
   100% { transform: translate3d(10vmax, -6vmax, 0) scale(1.15); }
-}
-@keyframes float {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(0, -18px, 0); }
-}
-
-/* Orbit ring with a red "dot" that circles it, echoing the logo */
-.orbit {
-  position: absolute;
-  border-radius: 9999px;
-  border: 1px solid rgb(255 255 255 / 0.18);
-  animation: spin 40s linear infinite;
-}
-.orbit::after {
-  content: "";
-  position: absolute;
-  top: 14.6%;
-  right: 14.6%;
-  width: 16px;
-  height: 16px;
-  margin: -8px -8px 0 0;
-  border-radius: 9999px;
-  background: #eb2839;
-  box-shadow: 0 0 22px 6px rgb(235 40 57 / 0.5);
-}
-.orbit-light {
-  border-color: rgb(0 56 165 / 0.18);
-}
-.orbit-reverse {
-  animation-direction: reverse;
-  animation-duration: 60s;
-}
-.orbit-reverse::after {
-  width: 10px;
-  height: 10px;
-  margin: -5px -5px 0 0;
-  top: auto;
-  right: auto;
-  bottom: 14.6%;
-  left: 14.6%;
-  background: #018577;
-  box-shadow: 0 0 18px 4px rgb(1 133 119 / 0.5);
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
 }
 
 /* Crossfading Ken Burns slideshow (5 slides × 5s) */
@@ -207,17 +153,6 @@
   to { transform: scale(1.14) translate3d(-2%, -1%, 0); }
 }
 
-/* Pulsing ring (İstanbul marker) */
-.pulse-ring {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: pulse-ring 2.6s ease-out infinite;
-}
-@keyframes pulse-ring {
-  from { transform: scale(1); opacity: 0.7; }
-  to { transform: scale(3.2); opacity: 0; }
-}
-
 /* Scroll-driven reveal where supported; content is always visible otherwise */
 @supports (animation-timeline: view()) {
   .reveal {
@@ -234,10 +169,7 @@
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .motion-backdrop .orb,
-  .motion-backdrop .spark,
-  .orbit,
   .ken-burns,
-  .pulse-ring,
   .kb-slide img,
   .reveal {
     animation: none !important;
@@ -245,8 +177,3 @@
   .kb-slide { animation: none; }
   .kb-slide:first-child { opacity: 1; }
 }
-
-/* FAQ accordion marker */
-details > summary { list-style: none; }
-details > summary::-webkit-details-marker { display: none; }
-details[open] .faq-icon { transform: rotate(45deg); }

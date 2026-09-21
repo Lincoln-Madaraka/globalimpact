@@ -1,22 +1,20 @@
 import { Icon, type IconName } from "./Icon";
 
-const defaultIcons: IconName[] = ["search", "pencil", "rocket", "barChart"];
-
 /** Numbered process steps: a row on desktop, a vertical timeline on mobile. */
 export function Steps({
   steps,
-  icons = defaultIcons,
+  icons,
   deliverableLabel,
   tone = "dark",
 }: {
   steps: { title: string; text: string; deliverable?: string }[];
-  icons?: IconName[];
+  icons: IconName[];
   deliverableLabel?: string;
   tone?: "dark" | "light";
 }) {
   const light = tone === "light";
   return (
-    <ol className="relative grid gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+    <ol className={`relative grid gap-10 md:grid-cols-2 lg:gap-8 ${steps.length === 5 ? "lg:grid-cols-5" : "lg:grid-cols-4"}`}>
       <span
         aria-hidden="true"
         className={`absolute left-7 top-7 hidden h-px w-[calc(100%-3.5rem)] lg:block ${
@@ -31,12 +29,12 @@ export function Steps({
             }`}
           >
             <Icon name={icons[i % icons.length]} className="size-6" />
-            <span className="absolute -right-1 -top-1 grid size-6 place-items-center rounded-full bg-brand-red text-[0.7rem] font-extrabold text-white">
+            <span className="absolute -right-1 -top-1 grid size-6 place-items-center rounded-full bg-brand-green text-[0.7rem] font-extrabold text-white">
               {i + 1}
             </span>
           </span>
           <div>
-            <h3 className={`text-xl font-extrabold ${light ? "text-white" : "text-ink"}`}>{step.title}</h3>
+            <h3 className={`text-lg font-extrabold ${light ? "text-white" : "text-ink"}`}>{step.title}</h3>
             <p className={`mt-2.5 leading-relaxed ${light ? "text-white/75" : "text-ink-soft"}`}>{step.text}</p>
             {step.deliverable && (
               <p

@@ -1,11 +1,10 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import type { Accent } from "@/config/pillars";
 import type { PhotoName } from "@/config/photos";
 import { breadcrumbSchema } from "@/lib/structured-data";
 import { Icon } from "./Icon";
 import { JsonLd } from "./JsonLd";
-import { MotionBackdrop } from "./MotionBackdrop";
+import { MotionBackdrop, type Accent } from "./MotionBackdrop";
 import { PhotoCircle } from "./PhotoCircle";
 import { Container, Eyebrow } from "./ui";
 
@@ -60,7 +59,7 @@ export function PageHero({
           <div className="mt-8">
             <Eyebrow tone="light">{eyebrow}</Eyebrow>
           </div>
-          <h1 className="mt-5 text-4xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">{title}</h1>
+          <h1 className="mt-5 font-display text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">{title}</h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/80 sm:text-xl">{lead}</p>
           {children && <div className="mt-9 flex flex-wrap gap-3">{children}</div>}
         </div>

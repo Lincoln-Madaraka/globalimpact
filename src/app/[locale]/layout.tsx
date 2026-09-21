@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Montserrat, Plus_Jakarta_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
+import { Header, type NavItem, type NavLink } from "@/components/Header";
 import { JsonLd } from "@/components/JsonLd";
 import { getDictionary } from "@/i18n";
 import { isLocale, localeMeta, locales } from "@/i18n/config";
@@ -11,11 +11,8 @@ import { site } from "@/config/site";
 import { organizationSchema } from "@/lib/structured-data";
 import "../globals.css";
 
-const jakarta = Plus_Jakarta_Sans({
-  subsets: ["latin", "latin-ext"],
-  variable: "--font-jakarta",
-  display: "swap",
-});
+const jakarta = Plus_Jakarta_Sans({ subsets: ["latin", "latin-ext"], variable: "--font-jakarta", display: "swap" });
+const montserrat = Montserrat({ subsets: ["latin", "latin-ext"], variable: "--font-montserrat", display: "swap" });
 
 export const dynamicParams = false;
 
@@ -50,43 +47,50 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const dict = getDictionary(locale);
+  const { nav } = dict;
+  const link = (path: string, label: string, description?: string): NavLink => ({ href: localePath(locale, path), label, description });
 
-  const nav = [
-    { href: localePath(locale), label: dict.nav.home },
-    { href: localePath(locale, "/about"), label: dict.nav.about },
-    { href: localePath(locale, "/what-we-do"), label: dict.nav.whatWeDo },
-    { href: localePath(locale, "/impact"), label: dict.nav.impact },
-    { href: localePath(locale, "/get-involved"), label: dict.nav.getInvolved },
-    { href: localePath(locale, "/contact"), label: dict.nav.contact },
+  const work = [
+    link("/what-we-do", nav.whatWeDo, nav.descriptions.whatWeDo),
+    link("/path-of-wisdom", nav.pathOfWisdom, nav.descriptions.pathOfWisdom),
+    link("/path-of-action", nav.pathOfAction, nav.descriptions.pathOfAction),
+    link("/impact", nav.impact, nav.descriptions.impact),
+  ];
+  const items: NavItem[] = [
+    link("/about", nav.about),
+    { label: nav.ourWork, children: work },
+    link("/africa", nav.africa),
+    link("/partners", nav.partners),
+    link("/insights", nav.insights),
+  ];
+  const explore = [
+    link("", nav.home),
+    link("/about", nav.about),
+    link("/africa", nav.africa),
+    link("/partners", nav.partners),
+    link("/insights", nav.insights),
+    link("/contact", nav.contact),
   ];
 
   return (
-    <html lang={locale} className={jakarta.variable}>
+    <html lang={locale} className={`${jakarta.variable} ${montserrat.variable}`}>
       <body className="flex min-h-screen flex-col">
         <a
           href="#main"
           className="sr-only z-[60] rounded-full bg-white px-5 py-3 font-bold text-brand-blue shadow-lg focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
         >
-          {dict.nav.skip}
+          {nav.skip}
         </a>
         <Header
-          locale={locale}
           homeHref={localePath(locale)}
-          items={nav}
+          items={items}
           ctaHref={localePath(locale, "/contact")}
-          labels={{
-            cta: dict.nav.cta,
-            openMenu: dict.nav.openMenu,
-            closeMenu: dict.nav.closeMenu,
-            switchLanguage: dict.nav.switchLanguage,
-            switchLanguageLabel: dict.nav.switchLanguageLabel,
-            primary: dict.nav.primary,
-          }}
+          labels={{ cta: nav.cta, openMenu: nav.openMenu, closeMenu: nav.closeMenu, primary: nav.primary }}
         />
         <main id="main" className="flex-1">
           {children}
         </main>
-        <Footer locale={locale} dict={dict} nav={nav} />
+        <Footer locale={locale} dict={dict} explore={explore} work={work} />
         <JsonLd data={organizationSchema(dict)} />
       </body>
     </html>

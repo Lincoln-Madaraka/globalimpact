@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { localeMeta, locales, otherLocale, type Locale } from "@/i18n/config";
+import { localeMeta, locales, type Locale } from "@/i18n/config";
 import { localePath } from "@/config/routes";
 import { site } from "@/config/site";
 
@@ -40,7 +40,6 @@ export function pageMetadata({
       description,
       siteName: site.name,
       locale: localeMeta[locale].ogLocale,
-      alternateLocale: [localeMeta[otherLocale(locale)].ogLocale],
     },
     twitter: {
       card: "summary_large_image",

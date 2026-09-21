@@ -24,7 +24,11 @@ const PHOTOS = {
   "_ (10).jpeg": "handshake", // aerial handshake
   "_ (9).jpeg": "partnership", // handshake across a meeting table, white background
   "wallpaper.jpeg": "compliance", // holographic checklist held in an open hand
+  "earth-nasa-apollo17-public-domain.jpg": "earth", // "The Blue Marble", NASA / Apollo 17 (public domain), Africa at the centre
 };
+
+// Larger source photos can be published wider than the default.
+const WIDTHS = { earth: 1400 };
 
 await Promise.all([webDir, brandDir, ogDir].map((d) => mkdir(d, { recursive: true })));
 
@@ -32,7 +36,7 @@ const dims = {};
 for (const [file, name] of Object.entries(PHOTOS)) {
   const input = join(src, file);
   const web = await sharp(input)
-    .resize({ width: 736, withoutEnlargement: true })
+    .resize({ width: WIDTHS[name] ?? 736, withoutEnlargement: true })
     .webp({ quality: 78 })
     .toFile(join(webDir, `${name}.webp`));
   dims[name] = { width: web.width, height: web.height };
@@ -40,13 +44,6 @@ for (const [file, name] of Object.entries(PHOTOS)) {
   await sharp(input).resize(520, 520, { fit: "cover", position: "attention" }).jpeg({ quality: 82 }).toFile(join(ogDir, `${name}.jpg`));
   console.log(`✓ ${name.padEnd(12)} ${web.width}x${web.height}`);
 }
-
-await sharp(join(webDir, "environmental.svg"), { density: 150 })
-  .resize(520, 520)
-  .flatten({ background: "#018577" })
-  .jpeg({ quality: 85 })
-  .toFile(join(ogDir, "environmental.jpg"));
-dims.environmental = { width: 600, height: 600 };
 
 await writeFile(join(root, "src/config/photo-dimensions.json"), JSON.stringify(dims, null, 2) + "\n");
 

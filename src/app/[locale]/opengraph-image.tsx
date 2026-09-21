@@ -1,4 +1,7 @@
-import { renderOgImage } from "@/lib/og";
+import { localeParams, renderOgImage } from "@/lib/og";
+
+export const dynamic = "force-static";
+export const generateStaticParams = localeParams;
 
 export const alt = "Global Impact Alliance";
 export const size = { width: 1200, height: 630 };

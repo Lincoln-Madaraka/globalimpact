@@ -6,26 +6,35 @@ export const site = {
   shortName: "GIA",
   url: "https://gia-global.org",
   email: "procurement@gia-global.org",
-  phone: "", // TODO: e.g. "+90 212 000 00 00"
-  address: {
-    street: "", // TODO: street address
-    district: "", // TODO: e.g. "Şişli"
-    postalCode: "", // TODO
-    city: "İstanbul",
-    country: "Türkiye",
-    countryCode: "TR",
+  offices: {
+    hq: {
+      city: "New York",
+      region: "NY",
+      country: "United States",
+      countryCode: "US",
+      street: "", // TODO: street address
+      phone: "", // TODO: e.g. "+1 212 000 0000"
+    },
+    africa: {
+      city: "", // TODO: e.g. "Nairobi"
+      region: "",
+      country: "Kenya",
+      countryCode: "KE",
+      street: "", // TODO: street address
+      phone: "", // TODO: e.g. "+254 20 000 0000"
+    },
   },
-  geo: { latitude: 41.0082, longitude: 28.9784 }, // TODO: exact office coordinates for the map
   socials: {
-    linkedin: "", // TODO: https://www.linkedin.com/company/...
-    instagram: "", // TODO: https://www.instagram.com/...
-    x: "", // TODO: https://x.com/...
+    linkedin: "https://www.linkedin.com/company/global-impact-alliance",
+    instagram: "", // TODO
+    x: "", // TODO
   },
   // Optional form backend (e.g. a Formspree or Web3Forms endpoint URL).
   // When empty, the contact form opens the visitor's email app addressed to `email`.
   formEndpoint: "",
-  // TODO: add leadership once ready; the About page shows this list only when it is not empty.
-  team: [] as { name: string; role: { en: string; tr: string }; photo?: string }[],
 };
 
 export const absoluteUrl = (path = "/") => new URL(path, site.url).toString();
+
+export const officePlace = (office: { city: string; country: string }) =>
+  [office.city, office.country].filter(Boolean).join(", ");

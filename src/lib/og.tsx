@@ -2,8 +2,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { getDictionary } from "@/i18n";
-import { isLocale } from "@/i18n/config";
-import { isPillarSlug, pillarStyle } from "@/config/pillars";
+import { isLocale, locales } from "@/i18n/config";
 import type { PhotoName } from "@/config/photos";
 import { site } from "@/config/site";
 
@@ -12,46 +11,51 @@ import { site } from "@/config/site";
 
 export const ogSize = { width: 1200, height: 630 };
 
+/** Static params for a locale-level preview image route (static export needs them listed). */
+export const localeParams = () => locales.map((locale) => ({ locale }));
+
 const read = (path: string) => readFile(join(process.cwd(), path));
-const font = (subset: string, weight: number) =>
-  read(`node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-${subset}-${weight}-normal.woff`);
+const font = (family: string, subset: string, weight: number) =>
+  read(`node_modules/@fontsource/${family}/files/${family}-${subset}-${weight}-normal.woff`);
 const dataUri = (buffer: Buffer, type: string) => `data:${type};base64,${buffer.toString("base64")}`;
 
-/** `page` is a pillar slug or one of: home, about, what-we-do, impact, get-involved, contact. */
+/** `page` is a page key (home, about, what-we-do, …) or `insights/<slug>` for an article. */
 function content(locale: string, page: string): { eyebrow: string; title: string; photo: PhotoName } {
   const dict = getDictionary(isLocale(locale) ? locale : "en");
-  if (isPillarSlug(page)) {
-    return { eyebrow: dict.nav.whatWeDo, title: dict.pillars[page].name, photo: pillarStyle[page].photo };
-  }
-  switch (page) {
-    case "about":
-      return { eyebrow: dict.about.hero.eyebrow, title: dict.about.hero.title, photo: "boardroom" };
-    case "what-we-do":
-      return { eyebrow: dict.whatWeDo.hero.eyebrow, title: dict.whatWeDo.hero.title, photo: "strategy" };
-    case "impact":
-      return { eyebrow: dict.impact.hero.eyebrow, title: dict.impact.hero.title, photo: "community" };
-    case "get-involved":
-      return { eyebrow: dict.getInvolved.hero.eyebrow, title: dict.getInvolved.hero.title, photo: "partnership" };
-    case "contact":
-      return { eyebrow: dict.contact.hero.eyebrow, title: dict.contact.hero.title, photo: "contact" };
-    default:
-      return {
-        eyebrow: dict.home.hero.eyebrow,
-        title: `${dict.home.hero.title} ${dict.home.hero.titleAccent}`,
-        photo: "handshake",
-      };
-  }
+  const article = page.startsWith("insights/") && dict.insights.articles.find((a) => `insights/${a.slug}` === page);
+  if (article) return { eyebrow: `${dict.nav.insights} · ${article.topic}`, title: article.title, photo: article.image };
+
+  const pages: Record<string, { eyebrow: string; title: string; photo: PhotoName }> = {
+    about: { eyebrow: dict.about.hero.eyebrow, title: dict.about.hero.title, photo: "partnership" },
+    "what-we-do": { eyebrow: dict.whatWeDo.hero.eyebrow, title: dict.whatWeDo.hero.title, photo: "strategy" },
+    "path-of-wisdom": { eyebrow: dict.wisdom.hero.eyebrow, title: dict.wisdom.hero.title, photo: "boardroom" },
+    "path-of-action": { eyebrow: dict.action.hero.eyebrow, title: dict.action.hero.title, photo: "consultation" },
+    africa: { eyebrow: dict.africa.hero.eyebrow, title: dict.africa.hero.title, photo: "earth" },
+    impact: { eyebrow: dict.impact.hero.eyebrow, title: dict.impact.hero.title, photo: "compliance" },
+    partners: { eyebrow: dict.partners.hero.eyebrow, title: dict.partners.hero.title, photo: "handshake" },
+    insights: { eyebrow: dict.insights.hero.eyebrow, title: dict.insights.hero.title, photo: "community" },
+    contact: { eyebrow: dict.contact.hero.eyebrow, title: dict.contact.hero.title, photo: "contact" },
+  };
+  return (
+    pages[page] ?? {
+      eyebrow: dict.home.hero.eyebrow,
+      title: `${dict.home.hero.title} ${dict.home.hero.titleAccent}`,
+      photo: "earth",
+    }
+  );
 }
 
 export async function renderOgImage(locale: string, page: string) {
   const { eyebrow, title, photo } = content(locale, page);
-  const [logo, image, medium, mediumExt, bold, boldExt] = await Promise.all([
+  const [logo, image, medium, mediumExt, bold, boldExt, display, displayExt] = await Promise.all([
     read("src/assets/og/logo.png"),
     read(`src/assets/og/${photo}.jpg`),
-    font("latin", 500),
-    font("latin-ext", 500),
-    font("latin", 800),
-    font("latin-ext", 800),
+    font("plus-jakarta-sans", "latin", 500),
+    font("plus-jakarta-sans", "latin-ext", 500),
+    font("plus-jakarta-sans", "latin", 800),
+    font("plus-jakarta-sans", "latin-ext", 800),
+    font("montserrat", "latin", 800),
+    font("montserrat", "latin-ext", 800),
   ]);
 
   return new ImageResponse(
@@ -101,13 +105,13 @@ export async function renderOgImage(locale: string, page: string) {
 
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 22, fontWeight: 500, color: "rgba(255,255,255,0.82)" }}>
-              <div style={{ width: 14, height: 14, borderRadius: 999, background: "#eb2839" }} />
               {eyebrow}
             </div>
             <div
               style={{
                 marginTop: 18,
-                fontSize: title.length > 48 ? 50 : title.length > 30 ? 58 : 66,
+                fontFamily: "Montserrat",
+                fontSize: title.length > 48 ? 48 : title.length > 30 ? 56 : 64,
                 fontWeight: 800,
                 lineHeight: 1.08,
                 letterSpacing: -1.5,
@@ -144,18 +148,6 @@ export async function renderOgImage(locale: string, page: string) {
             height={420}
             style={{ borderRadius: 999, objectFit: "cover", border: "8px solid rgba(255,255,255,0.14)" }}
           />
-          <div
-            style={{
-              position: "absolute",
-              top: 56,
-              right: 56,
-              width: 28,
-              height: 28,
-              borderRadius: 999,
-              background: "#eb2839",
-              boxShadow: "0 0 30px 8px rgba(235,40,57,0.45)",
-            }}
-          />
         </div>
       </div>
     ),
@@ -166,6 +158,8 @@ export async function renderOgImage(locale: string, page: string) {
         { name: "Jakarta", data: mediumExt, weight: 500, style: "normal" },
         { name: "Jakarta", data: bold, weight: 800, style: "normal" },
         { name: "Jakarta", data: boldExt, weight: 800, style: "normal" },
+        { name: "Montserrat", data: display, weight: 800, style: "normal" },
+        { name: "Montserrat", data: displayExt, weight: 800, style: "normal" },
       ],
     },
   );

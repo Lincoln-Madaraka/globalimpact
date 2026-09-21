@@ -1,11 +1,10 @@
 import "server-only";
 import type { Locale } from "./config";
 import { en } from "./dictionaries/en";
-import { tr } from "./dictionaries/tr";
 
 export type { Dictionary } from "./dictionaries/en";
 
-const dictionaries = { en, tr };
+const dictionaries = { en };
 
 export const getDictionary = (locale: Locale) => dictionaries[locale];
 

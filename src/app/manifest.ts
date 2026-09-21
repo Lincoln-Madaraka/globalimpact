@@ -7,7 +7,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: site.name,
     short_name: site.shortName,
-    description: "Corporate social responsibility from İstanbul: environmental, ethical, philanthropic and economic impact.",
+    description: "Global Impact Alliance connects wisdom with action: Indigenous knowledge, leadership, capital and systemic change.",
     start_url: "/en/",
     display: "standalone",
     background_color: "#ffffff",

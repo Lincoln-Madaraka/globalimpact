@@ -1,36 +1,30 @@
 import type { Metadata } from "next";
+import { defaultLocale } from "@/i18n/config";
 import { localePath } from "@/config/routes";
 import { site } from "@/config/site";
 
-// A static site cannot redirect on the server, so "/" picks the visitor's
-// language in the browser (Turkish browsers get /tr/, everyone else /en/).
+// A static site cannot redirect on the server, so "/" forwards to the default
+// language in the browser. On hosts that support it, add a server-side
+// 301 from "/" to "/en/" as well (see README).
+
+const home = localePath(defaultLocale);
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: site.name,
   robots: { index: false, follow: true },
-  alternates: {
-    canonical: localePath("en"),
-    languages: { en: localePath("en"), tr: localePath("tr"), "x-default": localePath("en") },
-  },
+  alternates: { canonical: home },
 };
-
-const script = `(function(){var l=(navigator.languages&&navigator.languages[0])||navigator.language||"";location.replace(l.toLowerCase().indexOf("tr")===0?"${localePath("tr")}":"${localePath("en")}");})();`;
 
 export default function RootRedirect() {
   return (
     <>
-      <script dangerouslySetInnerHTML={{ __html: script }} />
-      <meta httpEquiv="refresh" content={`0; url=${localePath("en")}`} />
+      <script dangerouslySetInnerHTML={{ __html: `location.replace(${JSON.stringify(home)});` }} />
+      <meta httpEquiv="refresh" content={`0; url=${home}`} />
       <main style={{ minHeight: "100vh", display: "grid", placeItems: "center", textAlign: "center", padding: 24 }}>
         <p>
-          {site.name} ·{" "}
-          <a href={localePath("en")} style={{ color: "#fff" }}>
-            English
-          </a>{" "}
-          ·{" "}
-          <a href={localePath("tr")} style={{ color: "#fff" }}>
-            Türkçe
+          <a href={home} style={{ color: "#fff" }}>
+            {site.name}
           </a>
         </p>
       </main>
