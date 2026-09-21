@@ -47,7 +47,7 @@ export function Footer({
   return (
     <footer className="relative isolate overflow-hidden bg-navy text-white">
       <div aria-hidden="true" className="absolute -right-40 -top-40 -z-10 size-[30rem] rounded-full bg-brand-blue/40 blur-3xl" />
-      <div aria-hidden="true" className="absolute -bottom-48 -left-32 -z-10 size-[26rem] rounded-full bg-brand-green/25 blur-3xl" />
+      <div aria-hidden="true" className="absolute -bottom-48 -left-32 -z-10 size-[26rem] rounded-full bg-[#1f5fe0]/30 blur-3xl" />
 
       <Container className="grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1.3fr] lg:py-20">
         <div className="max-w-sm">

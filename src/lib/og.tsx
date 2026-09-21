@@ -6,13 +6,25 @@ import { isLocale, locales } from "@/i18n/config";
 import type { PhotoName } from "@/config/photos";
 import { site } from "@/config/site";
 
-// Shared renderer for every route's `opengraph-image.tsx`: the branded preview
-// shown when a page link is shared on social media, chat apps and search results.
+// Branded link-preview images (Open Graph / Twitter), one per page, rendered at build
+// time by src/app/og/[image]/route.tsx and saved as real .png files under /og/.
 
 export const ogSize = { width: 1200, height: 630 };
 
-/** Static params for a locale-level preview image route (static export needs them listed). */
-export const localeParams = () => locales.map((locale) => ({ locale }));
+const staticPages = ["home", "about", "what-we-do", "path-of-wisdom", "path-of-action", "africa", "impact", "partners", "insights", "contact"];
+
+/** Every preview image to generate: one per page and insight article, per language. */
+export const ogImages = () =>
+  locales.flatMap((locale) =>
+    [...staticPages, ...getDictionary(locale).insights.articles.map((a) => `insights/${a.slug}`)].map((page) => ({
+      locale,
+      page,
+      file: `${locale}-${page.replace(/\//g, "-")}.png`,
+    })),
+  );
+
+/** Public URL of a page's preview image. `path` is the page path without the locale, e.g. "/about". */
+export const ogImageUrl = (locale: string, path: string) => `/og/${locale}-${(path.slice(1) || "home").replace(/\//g, "-")}.png`;
 
 const read = (path: string) => readFile(join(process.cwd(), path));
 const font = (family: string, subset: string, weight: number) =>
@@ -31,7 +43,7 @@ function content(locale: string, page: string): { eyebrow: string; title: string
     "path-of-wisdom": { eyebrow: dict.wisdom.hero.eyebrow, title: dict.wisdom.hero.title, photo: "boardroom" },
     "path-of-action": { eyebrow: dict.action.hero.eyebrow, title: dict.action.hero.title, photo: "consultation" },
     africa: { eyebrow: dict.africa.hero.eyebrow, title: dict.africa.hero.title, photo: "earth" },
-    impact: { eyebrow: dict.impact.hero.eyebrow, title: dict.impact.hero.title, photo: "compliance" },
+    impact: { eyebrow: dict.impact.hero.eyebrow, title: dict.impact.hero.title, photo: "earth" },
     partners: { eyebrow: dict.partners.hero.eyebrow, title: dict.partners.hero.title, photo: "handshake" },
     insights: { eyebrow: dict.insights.hero.eyebrow, title: dict.insights.hero.title, photo: "community" },
     contact: { eyebrow: dict.contact.hero.eyebrow, title: dict.contact.hero.title, photo: "contact" },
@@ -66,9 +78,9 @@ export async function renderOgImage(locale: string, page: string) {
           height: "100%",
           display: "flex",
           position: "relative",
-          backgroundColor: "#061640",
+          backgroundColor: "#0038a5",
           backgroundImage:
-            "radial-gradient(circle at 0% 0%, #0b3cad 0%, rgba(6,22,64,0) 55%), radial-gradient(circle at 100% 100%, #018577 0%, rgba(6,22,64,0) 55%)",
+            "radial-gradient(circle at 0% 0%, #0b3cad 0%, rgba(6,22,64,0) 55%), radial-gradient(circle at 100% 100%, #0a2a7a 0%, rgba(6,22,64,0) 55%)",
           color: "white",
           fontFamily: "Jakarta",
         }}
@@ -122,7 +134,7 @@ export async function renderOgImage(locale: string, page: string) {
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: 14, fontSize: 24, fontWeight: 500, color: "rgba(255,255,255,0.78)" }}>
-            <div style={{ width: 40, height: 4, borderRadius: 4, background: "#018577" }} />
+            <div style={{ width: 40, height: 4, borderRadius: 4, background: "rgba(255,255,255,0.6)" }} />
             {new URL(site.url).host}
           </div>
         </div>

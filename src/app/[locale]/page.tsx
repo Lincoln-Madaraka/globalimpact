@@ -4,7 +4,6 @@ import { AreaCard, FeatureCard, PersonCard, ProjectCard } from "@/components/car
 import { CtaBanner } from "@/components/CtaBanner";
 import { Icon, type IconName } from "@/components/Icon";
 import { MotionBackdrop } from "@/components/MotionBackdrop";
-import { Photo } from "@/components/Photo";
 import { PhotoCircle } from "@/components/PhotoCircle";
 import { Steps } from "@/components/Steps";
 import { ButtonLink, CheckList, Container, Eyebrow, SectionHeading, TextLink } from "@/components/ui";
@@ -43,7 +42,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
             <Eyebrow tone="light">{t.hero.eyebrow}</Eyebrow>
             <h1 className="mt-6 font-display text-[2.9rem] font-bold leading-[1.02] tracking-tight sm:text-7xl xl:text-8xl">
               {t.hero.title}{" "}
-              <span className="bg-gradient-to-r from-[#9ae8dc] via-white to-[#ff9aa3] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-white to-[#a9c6ff] bg-clip-text text-transparent">
                 {t.hero.titleAccent}
               </span>
             </h1>
@@ -55,15 +54,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
               </ButtonLink>
             </div>
           </div>
-          <div className="relative mx-auto w-full max-w-[19rem] sm:max-w-md lg:max-w-lg">
-            <PhotoCircle photos={["earth"]} alts={[dict.photos.earth]} preload className="w-full" />
-            <span className="absolute -left-2 top-[18%] rounded-full bg-white/95 px-3.5 py-1.5 text-xs font-bold text-ink shadow-lg sm:-left-6 sm:text-sm">
-              New York · {dict.common.globalHq}
-            </span>
-            <span className="absolute -right-2 bottom-[22%] rounded-full bg-white/95 px-3.5 py-1.5 text-xs font-bold text-ink shadow-lg sm:-right-6 sm:text-sm">
-              Kenya · {dict.common.africanHub}
-            </span>
-          </div>
+          <PhotoCircle photos={["earth"]} alts={[dict.photos.earth]} preload className="mx-auto w-full max-w-[19rem] sm:max-w-md lg:max-w-lg" />
         </Container>
       </section>
 
@@ -105,7 +96,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
 
       {/* What GIA does differently */}
       <section className="relative isolate overflow-hidden py-24 text-white sm:py-28">
-        <MotionBackdrop accent="green" />
+        <MotionBackdrop />
         <Container>
           <SectionHeading eyebrow={t.different.eyebrow} title={t.different.title} lead={t.different.lead} tone="light" />
           <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -139,7 +130,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
                 </TextLink>
               </div>
             ))}
-            <PhotoCircle photos={["strategy"]} alts={[dict.photos.strategy]} tone="light" className="order-first mx-auto w-full max-w-[16rem] sm:max-w-xs lg:order-2" />
+            <PhotoCircle photos={["strategy"]} alts={[dict.photos.strategy]} tone="light" className="order-first mx-auto w-full max-w-[16rem] sm:max-w-xs lg:order-2 lg:w-72" />
           </div>
         </Container>
       </section>
@@ -291,7 +282,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
               {t.leadership.link}
             </TextLink>
           </div>
-          <div className="mt-14 grid gap-5 lg:grid-cols-2">
+          <div className="mt-14 grid items-start gap-5 lg:grid-cols-2">
             <PersonCard person={founder} featured />
             <div className="grid gap-5">
               {advisors.map((person) => (

@@ -4,7 +4,7 @@ import type { PhotoName } from "@/config/photos";
 import { breadcrumbSchema } from "@/lib/structured-data";
 import { Icon } from "./Icon";
 import { JsonLd } from "./JsonLd";
-import { MotionBackdrop, type Accent } from "./MotionBackdrop";
+import { MotionBackdrop } from "./MotionBackdrop";
 import { PhotoCircle } from "./PhotoCircle";
 import { Container, Eyebrow } from "./ui";
 
@@ -19,7 +19,6 @@ export function PageHero({
   photoAlt,
   crumbs,
   crumbsLabel,
-  accent = "blue",
   children,
 }: {
   eyebrow: string;
@@ -29,12 +28,11 @@ export function PageHero({
   photoAlt: string;
   crumbs: Crumb[];
   crumbsLabel: string;
-  accent?: Accent;
   children?: ReactNode;
 }) {
   return (
     <section className="relative isolate overflow-hidden text-white">
-      <MotionBackdrop accent={accent} />
+      <MotionBackdrop />
       <JsonLd data={breadcrumbSchema(crumbs)} />
       <Container className="grid items-center gap-12 pb-20 pt-32 md:grid-cols-[1.25fr_1fr] md:pb-24 md:pt-40 lg:gap-20">
         <div>

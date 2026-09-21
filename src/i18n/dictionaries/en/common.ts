@@ -74,8 +74,6 @@ export const common = {
   founder: "Founder",
   team: "Core team",
   advisors: "Advisors",
-  globalHq: "Global headquarters",
-  africanHub: "African hub",
   email: "Email",
 };
 

@@ -33,9 +33,8 @@ export default async function ImpactPage({ params }: PageProps<"/[locale]/impact
         eyebrow={t.hero.eyebrow}
         title={t.hero.title}
         lead={t.hero.lead}
-        photo="compliance"
-        photoAlt={dict.photos.compliance}
-        accent="green"
+        photo="earth"
+        photoAlt={dict.photos.earth}
         crumbs={[
           { name: dict.nav.home, href: path("") },
           { name: dict.nav.impact, href: path("/impact") },
@@ -75,7 +74,7 @@ export default async function ImpactPage({ params }: PageProps<"/[locale]/impact
               <h2 className="mt-5 font-display text-3xl font-bold">{t.measurement.title}</h2>
               <p className="mt-4 text-lg leading-relaxed text-white/80">{t.measurement.text}</p>
             </div>
-            <PhotoCircle photos={["compliance"]} alts={[dict.photos.compliance]} className="mx-auto w-36" />
+            <PhotoCircle photos={["strategy"]} alts={[dict.photos.strategy]} className="mx-auto w-36" />
           </div>
         </Container>
       </section>
@@ -88,8 +87,8 @@ export default async function ImpactPage({ params }: PageProps<"/[locale]/impact
           { label: dict.cta.invest, href: `${path("/contact")}?topic=investment` },
           { label: dict.cta.partner, href: `${path("/contact")}?topic=partnership` },
         ]}
-        photo="earth"
-        photoAlt={dict.photos.earth}
+        photo="partnership"
+        photoAlt={dict.photos.partnership}
       />
     </>
   );

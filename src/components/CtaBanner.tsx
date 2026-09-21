@@ -27,7 +27,7 @@ export function CtaBanner({
     <section className="py-20 sm:py-24">
       <Container>
         <div className="reveal relative isolate overflow-hidden rounded-[2.5rem] px-6 py-14 text-white sm:px-12 lg:px-16 lg:py-16">
-          <MotionBackdrop accent="mixed" />
+          <MotionBackdrop />
           <div className="grid items-center gap-12 lg:grid-cols-[1.5fr_1fr]">
             <div>
               <Eyebrow tone="light">{eyebrow}</Eyebrow>

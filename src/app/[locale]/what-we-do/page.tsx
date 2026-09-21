@@ -68,7 +68,7 @@ export default async function WhatWeDoPage({ params }: PageProps<"/[locale]/what
       <div className="space-y-6 pb-8">
         {dict.areas.map((area, i) => (
           <section key={area.id} id={area.id} className={`scroll-mt-24 py-16 sm:py-20 ${i % 2 === 0 ? "bg-mist" : "bg-white"}`}>
-            <Container className="grid items-start gap-12 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
+            <Container className={`grid items-start gap-12 lg:gap-16 ${i % 2 === 1 ? "lg:grid-cols-[1.25fr_0.75fr]" : "lg:grid-cols-[0.75fr_1.25fr]"}`}>
               <div className={`reveal ${i % 2 === 1 ? "lg:order-2" : ""}`}>
                 <PhotoCircle photos={[area.image]} alts={[dict.photos[area.image]]} tone="light" className="mx-auto w-full max-w-[15rem] sm:max-w-xs" />
               </div>
@@ -121,8 +121,8 @@ export default async function WhatWeDoPage({ params }: PageProps<"/[locale]/what
           { label: dict.cta.partner, href: `${path("/contact")}?topic=partnership` },
           { label: dict.cta.invest, href: `${path("/contact")}?topic=investment` },
         ]}
-        photo="earth"
-        photoAlt={dict.photos.earth}
+        photo="handshake"
+        photoAlt={dict.photos.handshake}
       />
     </>
   );

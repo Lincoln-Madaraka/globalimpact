@@ -40,7 +40,6 @@ export default async function AfricaPage({ params }: PageProps<"/[locale]/africa
         lead={t.hero.lead}
         photo="earth"
         photoAlt={dict.photos.earth}
-        accent="earth"
         crumbs={[
           { name: dict.nav.home, href: path("") },
           { name: dict.nav.africa, href: path("/africa") },
@@ -74,9 +73,6 @@ export default async function AfricaPage({ params }: PageProps<"/[locale]/africa
             <div className="relative aspect-square overflow-hidden rounded-[2.5rem] bg-navy shadow-2xl shadow-brand-blue/15">
               <Photo name="partnership" alt={dict.photos.partnership} />
             </div>
-            <span className="absolute -bottom-5 left-6 rounded-2xl bg-white px-5 py-4 font-bold text-ink shadow-xl">
-              Kenya · {dict.common.africanHub}
-            </span>
           </div>
         </Container>
       </section>
@@ -93,7 +89,7 @@ export default async function AfricaPage({ params }: PageProps<"/[locale]/africa
       </section>
 
       <section className="relative isolate overflow-hidden py-24 text-white sm:py-28">
-        <MotionBackdrop accent="earth" />
+        <MotionBackdrop />
         <Container>
           <SectionHeading eyebrow={t.principles.eyebrow} title={t.principles.title} tone="light" />
           <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -135,8 +131,8 @@ export default async function AfricaPage({ params }: PageProps<"/[locale]/africa
           { label: dict.cta.collaborate, href: `${path("/contact")}?topic=africa` },
           { label: dict.cta.invest, href: `${path("/contact")}?topic=investment` },
         ]}
-        photo="community"
-        photoAlt={dict.photos.community}
+        photo="boardroom"
+        photoAlt={dict.photos.boardroom}
       />
     </>
   );

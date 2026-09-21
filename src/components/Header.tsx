@@ -178,7 +178,7 @@ export function Header({
           className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-navy text-white xl:hidden"
         >
           <div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 size-80 rounded-full bg-brand-blue/50 blur-3xl" />
-          <div aria-hidden="true" className="pointer-events-none absolute -bottom-24 -left-24 size-80 rounded-full bg-brand-green/40 blur-3xl" />
+          <div aria-hidden="true" className="pointer-events-none absolute -bottom-24 -left-24 size-80 rounded-full bg-[#1f5fe0]/40 blur-3xl" />
           <Container className="relative flex h-20 shrink-0 items-center justify-between">
             {brand()}
             <button

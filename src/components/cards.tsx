@@ -6,7 +6,7 @@ import { Photo } from "./Photo";
 
 /** One of the eight areas of work, linking to its section on the What we do page. */
 export function AreaCard({ href, icon, title, text, index }: { href: string; icon: IconName; title: string; text: string; index: number }) {
-  const tones = ["bg-brand-blue", "bg-brand-green", "bg-brand-red-700", "bg-navy"];
+  const tones = ["bg-brand-blue", "bg-brand-green", "bg-navy"];
   return (
     <Link
       href={href}

@@ -29,19 +29,32 @@ const PHOTOS = {
 
 // Larger source photos can be published wider than the default.
 const WIDTHS = { earth: 1400 };
+// Photos on a black background (space) are trimmed so the subject fills the frame.
+const TRIM_BLACK = new Set(["earth"]);
 
 await Promise.all([webDir, brandDir, ogDir].map((d) => mkdir(d, { recursive: true })));
+
+/** Removes the black background, then crops a little further so the subject fills the frame edge to edge. */
+async function trimToSubject(input) {
+  const trimmed = await sharp(input).trim({ background: "#000000", threshold: 40 }).toBuffer({ resolveWithObject: true });
+  const { width, height } = trimmed.info;
+  const side = Math.round(Math.min(width, height) * 0.93);
+  return sharp(trimmed.data)
+    .extract({ left: Math.round((width - side) / 2), top: Math.round((height - side) / 2), width: side, height: side })
+    .toBuffer();
+}
 
 const dims = {};
 for (const [file, name] of Object.entries(PHOTOS)) {
   const input = join(src, file);
-  const web = await sharp(input)
+  const source = TRIM_BLACK.has(name) ? await trimToSubject(input) : input;
+  const web = await sharp(source)
     .resize({ width: WIDTHS[name] ?? 736, withoutEnlargement: true })
     .webp({ quality: 78 })
     .toFile(join(webDir, `${name}.webp`));
   dims[name] = { width: web.width, height: web.height };
   // Square crop used inside the circular frame of the social preview images.
-  await sharp(input).resize(520, 520, { fit: "cover", position: "attention" }).jpeg({ quality: 82 }).toFile(join(ogDir, `${name}.jpg`));
+  await sharp(source).resize(520, 520, { fit: "cover", position: "attention" }).jpeg({ quality: 82 }).toFile(join(ogDir, `${name}.jpg`));
   console.log(`✓ ${name.padEnd(12)} ${web.width}x${web.height}`);
 }
 

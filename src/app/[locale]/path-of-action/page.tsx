@@ -42,7 +42,6 @@ export default async function PathOfActionPage({ params }: PageProps<"/[locale]/
         lead={t.hero.lead}
         photo="consultation"
         photoAlt={dict.photos.consultation}
-        accent="green"
         crumbs={[
           { name: dict.nav.home, href: path("") },
           { name: dict.nav.pathOfAction, href: path("/path-of-action") },
@@ -79,7 +78,7 @@ export default async function PathOfActionPage({ params }: PageProps<"/[locale]/
       </section>
 
       <section className="relative isolate overflow-hidden py-24 text-white sm:py-28">
-        <MotionBackdrop accent="green" />
+        <MotionBackdrop />
         <Container>
           <SectionHeading eyebrow={t.cycle.eyebrow} title={t.cycle.title} tone="light" />
           <div className="mt-16">

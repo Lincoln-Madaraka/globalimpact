@@ -14,7 +14,10 @@ export function ProjectCase({ project, labels, imageAlt, flip = false }: { proje
     { label: labels.impact, body: project.impact },
   ];
   return (
-    <article id={project.id} className="scroll-mt-28 grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+    <article
+      id={project.id}
+      className={`scroll-mt-28 grid gap-12 lg:gap-16 ${flip ? "lg:grid-cols-[1.2fr_0.8fr]" : "lg:grid-cols-[0.8fr_1.2fr]"}`}
+    >
       <div className={`reveal lg:sticky lg:top-28 lg:self-start ${flip ? "lg:order-2" : ""}`}>
         <PhotoCircle photos={[project.image]} alts={[imageAlt]} tone="light" className="mx-auto w-full max-w-[16rem] sm:max-w-xs" />
         <div className="mt-10 text-center lg:text-left">

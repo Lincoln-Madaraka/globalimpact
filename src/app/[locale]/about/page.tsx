@@ -102,7 +102,7 @@ export default async function AboutPage({ params }: PageProps<"/[locale]/about">
 
       {/* Why it matters */}
       <section className="relative isolate overflow-hidden py-24 text-white sm:py-28">
-        <MotionBackdrop accent="green" />
+        <MotionBackdrop />
         <Container className="grid gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
           <div>
             <SectionHeading eyebrow={t.why.eyebrow} title={t.why.title} tone="light" />
