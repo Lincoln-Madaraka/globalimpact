@@ -1,0 +1,252 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand colours sampled from the Global Impact Alliance logo */
+  --color-brand-blue: #0038a5;
+  --color-brand-blue-700: #002a7d;
+  --color-brand-blue-50: #eef3fc;
+  --color-brand-green: #018577;
+  --color-brand-green-700: #016a5f;
+  --color-brand-green-50: #e7f5f2;
+  --color-brand-red: #eb2839;
+  --color-brand-red-700: #c81e2e;
+  --color-brand-red-800: #a51726;
+  --color-brand-red-50: #fdeced;
+
+  --color-ink: #0b1b3f;
+  --color-ink-soft: #46526d;
+  --color-navy: #061640;
+  --color-mist: #f4f7fb;
+  --color-line: #e2e8f2;
+
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: #ffffff;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--color-brand-blue);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-brand-red);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+}
+
+/* ---------- Motion background ---------- */
+
+.motion-backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: -1;
+  background:
+    radial-gradient(120% 80% at 0% 0%, #0a2c80 0%, transparent 60%),
+    linear-gradient(160deg, #061640 0%, #0b1b3f 55%, #03302c 100%);
+}
+
+.motion-backdrop .orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  will-change: transform;
+}
+
+.motion-backdrop .orb-a {
+  width: 48vmax;
+  height: 48vmax;
+  top: -18vmax;
+  left: -14vmax;
+  background: var(--orb-a, #0038a5);
+  opacity: 0.7;
+  animation: drift-a 26s ease-in-out infinite alternate;
+}
+
+.motion-backdrop .orb-b {
+  width: 42vmax;
+  height: 42vmax;
+  bottom: -20vmax;
+  right: -12vmax;
+  background: var(--orb-b, #018577);
+  opacity: 0.6;
+  animation: drift-b 32s ease-in-out infinite alternate;
+}
+
+.motion-backdrop .orb-c {
+  width: 24vmax;
+  height: 24vmax;
+  top: 35%;
+  left: 40%;
+  background: var(--orb-c, #1b5fd9);
+  opacity: 0.35;
+  animation: drift-c 38s ease-in-out infinite alternate;
+}
+
+.motion-backdrop .spark {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background: #eb2839;
+  box-shadow: 0 0 18px 4px rgb(235 40 57 / 0.55);
+  animation: float 9s ease-in-out infinite;
+}
+
+.motion-backdrop .dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgb(255 255 255 / 0.09) 1px, transparent 1px);
+  background-size: 26px 26px;
+  mask-image: linear-gradient(to bottom, black 0%, transparent 85%);
+}
+
+@keyframes drift-a {
+  to { transform: translate3d(14vmax, 9vmax, 0) scale(1.12); }
+}
+@keyframes drift-b {
+  to { transform: translate3d(-12vmax, -8vmax, 0) scale(1.08); }
+}
+@keyframes drift-c {
+  0% { transform: translate3d(-8vmax, 4vmax, 0) scale(0.9); }
+  100% { transform: translate3d(10vmax, -6vmax, 0) scale(1.15); }
+}
+@keyframes float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -18px, 0); }
+}
+
+/* Orbit ring with a red "dot" that circles it, echoing the logo */
+.orbit {
+  position: absolute;
+  border-radius: 9999px;
+  border: 1px solid rgb(255 255 255 / 0.18);
+  animation: spin 40s linear infinite;
+}
+.orbit::after {
+  content: "";
+  position: absolute;
+  top: 14.6%;
+  right: 14.6%;
+  width: 16px;
+  height: 16px;
+  margin: -8px -8px 0 0;
+  border-radius: 9999px;
+  background: #eb2839;
+  box-shadow: 0 0 22px 6px rgb(235 40 57 / 0.5);
+}
+.orbit-light {
+  border-color: rgb(0 56 165 / 0.18);
+}
+.orbit-reverse {
+  animation-direction: reverse;
+  animation-duration: 60s;
+}
+.orbit-reverse::after {
+  width: 10px;
+  height: 10px;
+  margin: -5px -5px 0 0;
+  top: auto;
+  right: auto;
+  bottom: 14.6%;
+  left: 14.6%;
+  background: #018577;
+  box-shadow: 0 0 18px 4px rgb(1 133 119 / 0.5);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Crossfading Ken Burns slideshow (5 slides × 5s) */
+.kb-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  animation: kb-fade 25s linear infinite;
+}
+.kb-slide img {
+  animation: kb-zoom 25s linear infinite;
+  animation-delay: inherit;
+}
+@keyframes kb-fade {
+  0% { opacity: 1; }
+  16% { opacity: 1; }
+  20% { opacity: 0; }
+  96% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes kb-zoom {
+  0% { transform: scale(1.04); }
+  20% { transform: scale(1.16) translate3d(-1.5%, -1.5%, 0); }
+  100% { transform: scale(1.04); }
+}
+
+.ken-burns {
+  animation: ken-burns 22s ease-in-out infinite alternate;
+}
+@keyframes ken-burns {
+  from { transform: scale(1.02); }
+  to { transform: scale(1.14) translate3d(-2%, -1%, 0); }
+}
+
+/* Pulsing ring (İstanbul marker) */
+.pulse-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulse-ring 2.6s ease-out infinite;
+}
+@keyframes pulse-ring {
+  from { transform: scale(1); opacity: 0.7; }
+  to { transform: scale(3.2); opacity: 0; }
+}
+
+/* Scroll-driven reveal where supported; content is always visible otherwise */
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 22%;
+  }
+}
+@keyframes reveal {
+  from { opacity: 0; transform: translate3d(0, 28px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .motion-backdrop .orb,
+  .motion-backdrop .spark,
+  .orbit,
+  .ken-burns,
+  .pulse-ring,
+  .kb-slide img,
+  .reveal {
+    animation: none !important;
+  }
+  .kb-slide { animation: none; }
+  .kb-slide:first-child { opacity: 1; }
+}
+
+/* FAQ accordion marker */
+details > summary { list-style: none; }
+details > summary::-webkit-details-marker { display: none; }
+details[open] .faq-icon { transform: rotate(45deg); }

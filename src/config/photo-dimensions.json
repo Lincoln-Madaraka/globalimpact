@@ -1,0 +1,42 @@
+{
+  "consultation": {
+    "width": 736,
+    "height": 1104
+  },
+  "boardroom": {
+    "width": 736,
+    "height": 1104
+  },
+  "strategy": {
+    "width": 736,
+    "height": 1104
+  },
+  "community": {
+    "width": 527,
+    "height": 524
+  },
+  "office": {
+    "width": 736,
+    "height": 1313
+  },
+  "contact": {
+    "width": 736,
+    "height": 1308
+  },
+  "handshake": {
+    "width": 627,
+    "height": 1000
+  },
+  "partnership": {
+    "width": 736,
+    "height": 736
+  },
+  "compliance": {
+    "width": 720,
+    "height": 1280
+  },
+  "environmental": {
+    "width": 600,
+    "height": 600
+  }
+}

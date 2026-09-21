@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-label="Wind turbines, green hills and a leaf under a red sun">
+  <style>
+    .blades { animation: spin 9s linear infinite; transform-box: view-box; }
+    .b1 { transform-origin: 190px 210px; }
+    .b2 { transform-origin: 318px 262px; animation-duration: 6s; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .blades { animation: none; } }
+  </style>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#12A894"/>
+      <stop offset="1" stop-color="#016E62"/>
+    </linearGradient>
+    <clipPath id="c"><circle cx="300" cy="300" r="300"/></clipPath>
+  </defs>
+  <g clip-path="url(#c)">
+    <rect width="600" height="600" fill="url(#sky)"/>
+    <circle cx="440" cy="165" r="96" fill="#EB2839" opacity=".14"/>
+    <circle cx="440" cy="165" r="56" fill="#EB2839"/>
+    <g stroke="#fff" stroke-linecap="round" fill="none">
+      <line x1="190" y1="410" x2="190" y2="210" stroke-width="9"/>
+      <line x1="318" y1="420" x2="318" y2="262" stroke-width="7"/>
+    </g>
+    <g class="blades b1" stroke="#fff" stroke-width="11" stroke-linecap="round">
+      <line x1="190" y1="210" x2="190" y2="112"/>
+      <line x1="190" y1="210" x2="275" y2="259"/>
+      <line x1="190" y1="210" x2="105" y2="259"/>
+    </g>
+    <g class="blades b2" stroke="#fff" stroke-width="8" stroke-linecap="round">
+      <line x1="318" y1="262" x2="318" y2="196"/>
+      <line x1="318" y1="262" x2="375" y2="295"/>
+      <line x1="318" y1="262" x2="261" y2="295"/>
+    </g>
+    <circle cx="190" cy="210" r="11" fill="#fff"/>
+    <circle cx="318" cy="262" r="8" fill="#fff"/>
+    <path d="M0 410 C 120 350 230 355 330 395 S 520 445 600 395 V600 H0Z" fill="#0B917F"/>
+    <path d="M0 470 C 140 425 265 435 365 468 S 540 500 600 478 V600 H0Z" fill="#015A50"/>
+    <path d="M290 570 C 292 470 360 405 470 392 C 478 492 412 560 290 570 Z" fill="#fff"/>
+    <path d="M305 555 C 350 505 395 462 452 412" stroke="#018577" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <path d="M360 500 L 392 505 M 385 470 L 414 470" stroke="#018577" stroke-width="5" stroke-linecap="round"/>
+  </g>
+</svg>
