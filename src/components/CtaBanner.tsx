@@ -16,7 +16,7 @@ export function CtaBanner({
   tone?: "ivory" | "white";
 }) {
   return (
-    <section className={`border-t border-line py-16 sm:py-20 lg:py-24 ${tone === "ivory" ? "bg-ivory" : "bg-white"}`}>
+    <section className={`py-16 sm:py-20 lg:py-24 ${tone === "ivory" ? "bg-ivory" : "border-t border-line bg-white"}`}>
       <Container className="reveal grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-8">
         <div className="lg:col-span-7">
           <h2 className="max-w-[20ch] font-display text-h2 text-ink">{title}</h2>

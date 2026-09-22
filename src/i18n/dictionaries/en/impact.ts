@@ -75,7 +75,7 @@ export const impact = {
     },
     {
       id: "jumpiotic-indonesia",
-      title: "Jumpiotic: bringing Indigenous innovation to market",
+      title: "Jumpiotic: Indigenous innovation to market",
       place: "Indonesia",
       focus: "Indigenous innovation · Fair value",
       status: "In development",

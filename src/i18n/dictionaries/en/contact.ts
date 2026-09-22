@@ -1,7 +1,7 @@
 export const contact = {
   metaTitle: "Start a conversation",
   metaDescription:
-    "Partner with Global Impact Alliance, join the Alliance or invest in impact. Contact our global headquarters in New York or our African hub in Kenya at procurement@gia-global.org.",
+    "Partner with Global Impact Alliance, join the Alliance or invest in impact. Contact our global headquarters in New York or our African hub in Nairobi, Kenya at procurement@gia-global.org.",
   hero: {
     eyebrow: "Collaborate",
     title: "Start a conversation",

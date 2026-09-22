@@ -29,12 +29,36 @@ export const about = {
     title: "Principles we work by",
     lead: "Our philosophy is set out in the Wisdom Age Charter. In practice, it comes down to six principles.",
     items: [
-      { title: "Interdependence", text: "People, economies and nature form one system. Decisions should reflect that." },
-      { title: "Many ways of knowing", text: "Indigenous, ancestral and scientific knowledge are stronger together." },
-      { title: "Long-term stewardship", text: "We judge success over generations, not quarters." },
-      { title: "Systems, not symptoms", text: "We work on the incentives and assumptions beneath the problems." },
-      { title: "Elegant simplicity", text: "Enough is a strategy: less extraction, more care." },
-      { title: "Act together", text: "Lasting change comes from alliances across sectors, cultures and places." },
+      {
+        title: "Interdependence",
+        text: "People, economies and nature form one system. Decisions should reflect that.",
+        detail: "A supply chain, a watershed and a community's income are rarely separate questions, even when they sit in separate departments. In practice, this principle asks leaders to trace where a decision travels: who and what it touches, and what comes back later as cost or risk. It is why we bring investors, ecologists and Indigenous knowledge holders into the same conversation.",
+      },
+      {
+        title: "Many ways of knowing",
+        text: "Indigenous, ancestral and scientific knowledge are stronger together.",
+        detail: "Scientific data can show what is changing in a landscape. The people who have lived with that landscape for generations can often explain why, and what has worked before. We treat each as a partial view and design our programmes so that Elders, scientists and practitioners question and learn from one another, with Indigenous knowledge credited rather than simply taken.",
+      },
+      {
+        title: "Long-term stewardship",
+        text: "We judge success over generations, not quarters.",
+        detail: "Quarterly reporting rewards what can be shown quickly, which is rarely what lasts. We ask a different question of every project, investment and programme: will this still be sound for the people who inherit it? That means patient capital, relationships that outlive a single funding cycle, and a willingness to measure progress on the timescale of forests and communities.",
+      },
+      {
+        title: "Systems, not symptoms",
+        text: "We work on the incentives and assumptions beneath the problems.",
+        detail: "Many environmental and social problems are the predictable result of how incentives, rules and metrics are set up, and fixing one symptom often moves the problem elsewhere. So alongside projects on the ground, we work on the underlying design: how capital is allocated, how success is measured, and how the Wisdom Age Index can make stewardship visible where conventional metrics miss it.",
+      },
+      {
+        title: "Elegant simplicity",
+        text: "Enough is a strategy: less extraction, more care.",
+        detail: "Growth for its own sake has long been the default measure of success. Elegant simplicity asks what is actually enough for a business, a portfolio or a life, and what could be done better with less. It is a design principle, not austerity: fewer resources taken, and more attention given to quality, to relationships and to the places we depend on.",
+      },
+      {
+        title: "Act together",
+        text: "Lasting change comes from alliances across sectors, cultures and places.",
+        detail: "No investor, government, company or community holds the whole picture or all the means. GIA exists to bring them into working relationships: Indigenous leaders alongside investors, scientists alongside policymakers, members from New York to Kenya. Each partner keeps a clear role, so that together they can take on problems none of them could solve alone.",
+      },
     ],
   },
   how: {

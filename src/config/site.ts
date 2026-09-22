@@ -16,7 +16,7 @@ export const site = {
       phone: "", // TODO: e.g. "+1 212 000 0000"
     },
     africa: {
-      city: "", // TODO: e.g. "Nairobi"
+      city: "Nairobi",
       region: "",
       country: "Kenya",
       countryCode: "KE",
@@ -25,7 +25,7 @@ export const site = {
     },
   },
   socials: {
-    linkedin: "https://www.linkedin.com/company/global-impact-alliance",
+    linkedin: "", // TODO
     instagram: "", // TODO
     x: "", // TODO
   },

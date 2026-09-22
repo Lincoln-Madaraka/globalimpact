@@ -24,6 +24,7 @@ export function PageHero({
   crumbsLabel,
   variant = "page",
   wideVisual = false,
+  rule = true,
   children,
 }: {
   title: string;
@@ -37,6 +38,8 @@ export function PageHero({
   variant?: "page" | "article";
   /** Give the visual half the width (e.g. the Africa map) instead of a third. */
   wideVisual?: boolean;
+  /** Hairline under the hero; turn off when the next section changes colour anyway. */
+  rule?: boolean;
   children?: ReactNode;
 }) {
   const article = variant === "article";
@@ -69,7 +72,7 @@ export function PageHero({
               ))}
             </ol>
           </nav>
-          <div className={`grid gap-10 border-b border-line pb-14 pt-10 lg:gap-8 lg:pb-20 lg:pt-12 ${aside ? "lg:grid-cols-12 lg:items-center" : ""}`}>
+          <div className={`grid gap-10 pb-14 pt-10 lg:gap-8 lg:pb-20 lg:pt-12 ${rule ? "border-b border-line" : ""} ${aside ? "lg:grid-cols-12 lg:items-center" : ""}`}>
             <div className={aside ? (wideVisual ? "lg:col-span-6" : "lg:col-span-7") : article ? "" : "lg:max-w-[52rem]"}>
               <h1 className="max-w-[18ch] font-display text-[2.25rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-h1">{title}</h1>
               <p className="mt-6 max-w-[36rem] text-lead text-ink-soft">{lead}</p>

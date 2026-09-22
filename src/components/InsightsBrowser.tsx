@@ -28,7 +28,7 @@ export function InsightsBrowser({
       <div
         role="group"
         aria-label={labels.filter}
-        className="flex gap-6 overflow-x-auto border-b border-line max-sm:[mask-image:linear-gradient(to_right,#000_85%,transparent)]"
+        className="flex gap-6 overflow-x-auto max-sm:[mask-image:linear-gradient(to_right,#000_85%,transparent)]"
       >
         <button type="button" aria-pressed={!active} onClick={() => setActive(null)} className={tab(!active)}>
           {labels.all}
@@ -41,7 +41,7 @@ export function InsightsBrowser({
       </div>
       <div aria-live="polite">
         {visible.length > 0 ? (
-          <ul className="mt-12 grid gap-x-8 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-8 grid gap-x-8 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
             {visible.map((item) => (
               <li key={item.href}>
                 <ArticleCard {...item} />

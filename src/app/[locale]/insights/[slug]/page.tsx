@@ -58,7 +58,8 @@ export default async function ArticlePage({ params }: PageProps<"/[locale]/insig
       </PageHero>
 
       <Section tone="white">
-        <Container className="max-w-[42rem]">
+        <Container>
+          <div className="mx-auto max-w-[42rem]">
           <article className="space-y-6 text-[1.125rem] leading-[1.8] text-ink">
             {article.body.map((block, i) =>
               block.type === "h2" ? (
@@ -78,6 +79,7 @@ export default async function ArticlePage({ params }: PageProps<"/[locale]/insig
           <TextLink href={path("/insights")} className="mt-4">
             {dict.common.backToInsights}
           </TextLink>
+          </div>
         </Container>
       </Section>
 

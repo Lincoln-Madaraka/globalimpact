@@ -68,8 +68,9 @@ export default async function PathOfActionPage({ params }: PageProps<"/[locale]/
       {/* Mechanisms */}
       <Section tone="ivory">
         <Container>
-          <SectionHeading title={t.mechanisms.title} />
-          <div className="mt-10 grid gap-x-12 gap-y-10 lg:mt-12 lg:grid-cols-2">
+          <div className="grid gap-x-10 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
+            {/* The heading takes the first cell, so the mechanisms fill the grid beside it. */}
+            <SectionHeading title={t.mechanisms.title} />
             {t.mechanisms.items.map((item) => (
               <div key={item.title} className="reveal border-t border-line pt-6">
                 <h3 className="font-display text-xl font-semibold text-ink">{item.title}</h3>

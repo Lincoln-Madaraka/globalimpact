@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { CtaBanner } from "@/components/CtaBanner";
 import { JsonLd } from "@/components/JsonLd";
 import { PageHero } from "@/components/PageHero";
-import { CheckList, Container, Section, SectionHeading } from "@/components/ui";
+import { CheckList, Container, Section } from "@/components/ui";
 import { getDictionary } from "@/i18n";
 import { isLocale } from "@/i18n/config";
 import { localePath } from "@/config/routes";
@@ -38,14 +38,13 @@ export default async function WhatWeDoPage({ params }: PageProps<"/[locale]/what
           { name: dict.nav.whatWeDo, href: path("/what-we-do") },
         ]}
         crumbsLabel={dict.nav.breadcrumb}
+        rule={false}
       />
 
-      {/* Intro and index of the eight areas */}
-      <Section tone="white">
-        <Container>
-          <SectionHeading title={t.intro.title} lead={t.intro.text} />
-          <nav aria-label={t.jump} className="reveal">
-            <ul className="mt-10 grid gap-px border-y border-line bg-line sm:grid-cols-2 lg:mt-12 lg:grid-cols-4">
+      {/* Index of the eight areas, straight under the hero */}
+      <Container>
+        <nav aria-label={t.jump}>
+          <ul className="grid gap-px border-y border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
               {dict.areas.map((area, i) => (
                 <li key={area.id} className="bg-white">
                   <a
@@ -61,11 +60,10 @@ export default async function WhatWeDoPage({ params }: PageProps<"/[locale]/what
               ))}
             </ul>
           </nav>
-        </Container>
-      </Section>
+      </Container>
 
       {/* The eight areas, one row each */}
-      <Section tone="white" divider>
+      <Section tone="white">
         <Container>
           {dict.areas.map((area, i) => (
             <article
@@ -79,8 +77,12 @@ export default async function WhatWeDoPage({ params }: PageProps<"/[locale]/what
                 </p>
                 <h2 className="mt-4 font-display text-[clamp(1.75rem,1.4rem+1vw,2.5rem)] font-semibold leading-tight text-ink">{area.title}</h2>
                 <p className="mt-5 text-lead text-ink-soft">{area.what}</p>
+                <div className="mt-8 border-l-2 border-navy-900 pl-5">
+                  <p className="text-small font-semibold text-ink">{c.outcome}</p>
+                  <p className="mt-2 font-display text-xl font-semibold leading-snug text-ink">{area.outcome}</p>
+                </div>
               </div>
-              <dl className="reveal grid gap-8 sm:grid-cols-2 lg:col-span-6 lg:col-start-7">
+              <dl className="reveal grid gap-8 sm:grid-cols-2 lg:col-span-6 lg:col-start-7 lg:self-center">
                 <div>
                   <dt className="text-small font-semibold text-ink">{c.whoItServes}</dt>
                   <dd className="mt-2 text-ink-soft">{area.who}</dd>
@@ -90,10 +92,6 @@ export default async function WhatWeDoPage({ params }: PageProps<"/[locale]/what
                   <dd className="mt-3">
                     <CheckList items={area.does} />
                   </dd>
-                </div>
-                <div className="border-l-2 border-navy-900 pl-5 sm:col-span-2">
-                  <dt className="text-small font-semibold text-ink">{c.outcome}</dt>
-                  <dd className="mt-2 font-display text-xl font-semibold leading-snug text-ink lg:text-2xl">{area.outcome}</dd>
                 </div>
               </dl>
             </article>

@@ -162,18 +162,22 @@ export function PortraitCard({
   featured = false,
   size = "md",
   mono = false,
+  compactOnPhone = false,
   moreLabel,
   closeLabel,
 }: {
   person: Person;
   featured?: boolean;
   size?: "sm" | "md";
+  /** On phones, show a small portrait beside the name instead of a full-width photo. */
+  compactOnPhone?: boolean;
   /** Black-and-white portraits (turning to colour on hover), for rows of mixed photo styles. */
   mono?: boolean;
   moreLabel: string;
   closeLabel: string;
 }) {
-  const interactive = Boolean(person.bio);
+  // The featured card already shows the whole bio, so only the other cards open a modal.
+  const interactive = Boolean(person.bio) && !featured;
   const tone = mono ? "grayscale transition-[filter] duration-500 group-hover:grayscale-0" : "";
   const portrait = person.photo ? (
     <Figure
@@ -188,21 +192,33 @@ export function PortraitCard({
     <div className="grid aspect-[4/5] place-items-center bg-stone font-display text-4xl font-semibold text-muted">{initials(person.name)}</div>
   );
   const card = featured ? (
-    <div className="grid h-full gap-8 sm:grid-cols-[minmax(0,22rem)_1fr] sm:items-center">
+    <div className="grid h-full gap-8 sm:grid-cols-3 sm:items-center">
       {portrait}
-      <div>
+      <div className="sm:col-span-2">
         <h3 className="font-display text-[1.75rem] font-semibold leading-tight text-ink">{person.name}</h3>
         <Meta className="mt-2">{person.role}</Meta>
-        {person.bio && <p className="mt-5 max-w-[36rem] text-lead text-ink-soft">{person.bio}</p>}
-        {interactive && <MoreLabel label={moreLabel} tone="white" />}
+        {person.bio && <p className="mt-5 max-w-[40rem] text-lead text-ink-soft">{person.bio}</p>}
       </div>
     </div>
   ) : (
-    <div className="group h-full">
+    <div className={`group flex h-full flex-col ${compactOnPhone ? "max-sm:grid max-sm:grid-cols-[6.5rem_1fr] max-sm:items-center max-sm:gap-5" : ""}`}>
       {portrait}
-      <h3 className={`mt-5 font-display font-semibold text-ink ${size === "sm" ? "text-base" : "text-xl"}`}>{person.name}</h3>
-      <Meta className="mt-1">{person.role}</Meta>
-      {interactive && <MoreLabel label={moreLabel} tone="white" />}
+      <div className="flex flex-1 flex-col">
+        <h3
+          className={`font-display font-semibold text-ink ${compactOnPhone ? "sm:mt-5" : "mt-5"} ${
+            size === "sm" ? "text-base" : "text-[1.0625rem] sm:text-xl"
+          }`}
+        >
+          {person.name}
+        </h3>
+        <Meta className="mt-1">{person.role}</Meta>
+        {interactive && (
+          <>
+            <span className="flex-1" />
+            <MoreLabel label={moreLabel} tone="white" />
+          </>
+        )}
+      </div>
     </div>
   );
   if (!interactive) return card;
@@ -332,7 +348,7 @@ export function ArticleCard({
       <Meta>
         {topic} · {meta}
       </Meta>
-      <h3 className="mt-4 font-display text-2xl font-semibold leading-snug text-ink">
+      <h3 className="mt-4 font-display text-2xl font-semibold leading-snug text-ink [text-wrap:pretty] lg:text-xl">
         <span className="u-link group-hover:[background-size:100%_1px]">{title}</span>
       </h3>
       <p className="mt-3 flex-1 leading-relaxed text-ink-soft">{excerpt}</p>

@@ -46,6 +46,8 @@ const WIDTHS = { earth: 1400 };
 const DEFAULT_WIDTH = 1600;
 // Photos on a black background (space) are trimmed so the subject fills the frame.
 const TRIM_BLACK = new Set(["earth"]);
+// Keep only this top fraction of a photo, e.g. to cut off a phone app's carousel dots.
+const CROP_BOTTOM = { "woven-hands": 0.9 };
 
 const PEOPLE = ["dana", "erik", "camilla", "diego", "zaenab", "tomas", "satish", "peter", "flora", "pascal", "tamas", "andrea", "martina"];
 
@@ -64,7 +66,11 @@ async function trimToSubject(input) {
 const dims = {};
 for (const [file, name] of Object.entries(PHOTOS)) {
   const input = join(src, file);
-  const source = TRIM_BLACK.has(name) ? await trimToSubject(input) : input;
+  let source = TRIM_BLACK.has(name) ? await trimToSubject(input) : input;
+  if (CROP_BOTTOM[name]) {
+    const { width, height } = await sharp(source).metadata();
+    source = await sharp(source).extract({ left: 0, top: 0, width, height: Math.round(height * CROP_BOTTOM[name]) }).toBuffer();
+  }
   const web = await sharp(source)
     .resize({ width: WIDTHS[name] ?? DEFAULT_WIDTH, withoutEnlargement: true })
     .webp({ quality: 80 })

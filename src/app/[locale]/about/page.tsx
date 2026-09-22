@@ -137,18 +137,26 @@ export default async function AboutPage({ params }: PageProps<"/[locale]/about">
 
           <div className="mt-16">
             <h3 className={groupHeading}>{dict.common.advisors}</h3>
-            <div className="mt-8 grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-4">
+            <div className="mt-8 grid gap-6 sm:grid-cols-3 sm:gap-8">
               {advisors.map((person) => (
-                <PortraitCard key={person.name} person={person} moreLabel={dict.common.readMore} closeLabel={close} />
+                <PortraitCard key={person.name} person={person} compactOnPhone moreLabel={dict.common.readMore} closeLabel={close} />
               ))}
             </div>
           </div>
 
           <div className="mt-16">
             <h3 className={groupHeading}>{dict.common.expertAdvisors}</h3>
-            <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5">
+            <div className="mt-8 grid gap-6 sm:grid-cols-3 lg:grid-cols-5">
               {expertAdvisors.map((person) => (
-                <PortraitCard key={person.name} person={person} size="sm" mono moreLabel={dict.common.readMore} closeLabel={close} />
+                <PortraitCard
+                  key={person.name}
+                  person={person}
+                  size="sm"
+                  mono
+                  compactOnPhone
+                  moreLabel={dict.common.readMore}
+                  closeLabel={close}
+                />
               ))}
             </div>
           </div>
@@ -162,11 +170,9 @@ export default async function AboutPage({ params }: PageProps<"/[locale]/about">
 
       {/* Implementation partner */}
       <Section tone="white">
-        <Container>
-          <div className="max-w-3xl">
-            <h2 className="reveal font-display text-h2 text-ink">{t.foundation.title}</h2>
-            <p className="reveal mt-6 text-lead text-ink-soft">{t.foundation.text}</p>
-          </div>
+        <Container className="grid gap-6 lg:grid-cols-12 lg:gap-8">
+          <h2 className="reveal font-display text-h2 text-ink lg:col-span-5">{t.foundation.title}</h2>
+          <p className="reveal text-lead text-ink-soft lg:col-span-6 lg:col-start-7 lg:pt-2">{t.foundation.text}</p>
         </Container>
       </Section>
 

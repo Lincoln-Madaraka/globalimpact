@@ -49,7 +49,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
     <>
       {/* Hero */}
       <section className="on-dark bg-dusk relative isolate overflow-hidden text-white">
-        <Container className="pointer-events-none relative z-10 pt-32 lg:flex lg:min-h-[max(42rem,100svh)] lg:items-center lg:pb-16 lg:pt-24">
+        <Container className="pointer-events-none relative z-10 pt-32 lg:flex lg:min-h-[clamp(42rem,100svh,58rem)] lg:items-center lg:pb-16 lg:pt-24">
           <div className="pointer-events-auto max-w-[36rem] lg:max-w-[30rem] xl:max-w-[38rem]">
             <h1 className="max-w-[12ch] font-display text-display text-white">
               {t.hero.title} <span className="block font-light">{t.hero.titleAccent}</span>
@@ -69,7 +69,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
           <SpinningEarth
             label={dict.common.pauseEarth}
             controlClassName="absolute bottom-5 right-5 z-20"
-            className="absolute left-[10vw] top-0 aspect-square w-[122vw] max-w-[46rem] md:left-[30vw] lg:left-auto lg:right-0 lg:top-[calc(50%+2.5rem)] lg:w-[min(56vw,90svh)] lg:max-w-none lg:-translate-y-1/2 lg:translate-x-[30%] xl:w-[min(62vw,96svh,68rem)] xl:translate-x-[24%]"
+            className="absolute left-[10vw] top-0 aspect-square w-[122vw] max-w-[46rem] md:left-[30vw] lg:left-auto lg:right-0 lg:top-[calc(50%+2.5rem)] lg:w-[min(56vw,90svh)] lg:max-w-none lg:-translate-y-1/2 lg:translate-x-[30%] xl:w-[min(62vw,96svh,56rem)] xl:translate-x-[24%]"
           />
         </div>
       </section>
@@ -114,22 +114,22 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       </Section>
 
       {/* What GIA does differently */}
-      <Section tone="navy">
+      <Section tone="ivory">
         <Container>
           <div className="grid gap-10 lg:grid-cols-12 lg:gap-x-8">
-            <SectionHeading title={t.different.title} lead={t.different.lead} tone="light" className="lg:col-span-5" />
+            <SectionHeading title={t.different.title} lead={t.different.lead} className="lg:col-span-5" />
             <div className="reveal grid gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:col-span-7">
               {t.different.items.map((item) => (
-                <div key={item.title} className="border-t border-white/20 pt-6">
-                  <h3 className="font-display text-xl font-semibold text-white">{item.title}</h3>
-                  <p className="mt-3 text-white/72">{item.text}</p>
+                <div key={item.title} className="border-t border-line pt-6">
+                  <h3 className="font-display text-xl font-semibold text-ink">{item.title}</h3>
+                  <p className="mt-3 text-ink-soft">{item.text}</p>
                 </div>
               ))}
             </div>
           </div>
-          <h3 className="mt-14 font-display text-xl font-semibold text-white lg:mt-20">{dict.flow.title}</h3>
+          <h3 className="mt-14 font-display text-xl font-semibold text-ink lg:mt-20">{dict.flow.title}</h3>
           <div className="mt-8">
-            <Steps steps={dict.flow.steps} tone="light" />
+            <Steps steps={dict.flow.steps} />
           </div>
         </Container>
       </Section>
@@ -313,7 +313,13 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
           </div>
           <div className="reveal mt-12 grid gap-8 sm:grid-cols-3">
             {advisors.map((person) => (
-              <PortraitCard key={person.name} person={person} moreLabel={dict.common.readMore} closeLabel={dict.common.close} />
+              <PortraitCard
+                key={person.name}
+                person={person}
+                compactOnPhone
+                moreLabel={dict.common.readMore}
+                closeLabel={dict.common.close}
+              />
             ))}
           </div>
         </Container>

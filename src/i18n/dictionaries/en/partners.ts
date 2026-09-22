@@ -21,16 +21,56 @@ export const partners = {
     eyebrow: "Who we work with",
     title: "Ten kinds of partners, one alliance",
     items: [
-      { title: "Indigenous communities", text: "As knowledge holders, land stewards and project leaders." },
-      { title: "Investors", text: "To direct patient capital towards regenerative, well-governed opportunities." },
-      { title: "Foundations", text: "To fund system-level change and community-led projects." },
-      { title: "Corporates", text: "To align strategy, supply chains and innovation with long-term stewardship." },
-      { title: "Governments", text: "To shape policy and public investment with diverse knowledge at the table." },
-      { title: "Researchers", text: "To connect scientific inquiry with Indigenous and practical knowledge." },
-      { title: "NGOs", text: "To implement, scale and learn from what works on the ground." },
-      { title: "Universities", text: "To develop research, teaching and leadership programmes together." },
-      { title: "Entrepreneurs", text: "To grow ventures that restore ecosystems and strengthen communities." },
-      { title: "Global institutions", text: "To bring new perspectives into international agendas on climate, nature and finance." },
+      {
+        title: "Indigenous communities",
+        text: "As knowledge holders, land stewards and project leaders.",
+        detail: "Indigenous communities are at the centre of the Alliance, not at its edges. They lead projects on their own lands, guide our work through the Wisdom Council of Indigenous Elders and take part in the Alliance as Guardians. Every partnership rests on consent, respect and a fair share in the value their knowledge helps create.",
+      },
+      {
+        title: "Investors",
+        text: "To direct patient capital towards regenerative, well-governed opportunities.",
+        detail: "We work with family offices, banks and institutional investors who want their capital to restore rather than extract. Together we look for opportunities with sound governance and genuine community support, assessed with Indigenous and local partners before money moves. Investors can join the Alliance as Stewards and help shape collaborative capital mechanisms with their peers.",
+      },
+      {
+        title: "Foundations",
+        text: "To fund system-level change and community-led projects.",
+        detail: "Foundations can take risks and wait for results in ways that other capital often cannot. We help foundation leaders direct grants towards root causes as well as immediate needs, support projects that communities lead and pool resources with other funders around shared goals. Projects can be delivered with our implementation partner, the Wisdom Age Foundation.",
+      },
+      {
+        title: "Corporates",
+        text: "To align strategy, supply chains and innovation with long-term stewardship.",
+        detail: "Companies shape landscapes through what they source, make and sell. We work with business leaders who want to understand those effects and act on them: rethinking supply chains with the communities involved, bringing Indigenous and ecological knowledge into strategy and investing in innovation that restores rather than depletes. Senior executives can also join the Path of Wisdom programmes.",
+      },
+      {
+        title: "Governments",
+        text: "To shape policy and public investment with diverse knowledge at the table.",
+        detail: "Public policy sets many of the incentives that drive environmental and social outcomes. We bring policymakers together with Indigenous leaders, scientists, investors and entrepreneurs, so that new rules and public spending draw on knowledge that is often missing from policy discussions. Our aim is policy that holds up over the long term and reflects the people it affects.",
+      },
+      {
+        title: "Researchers",
+        text: "To connect scientific inquiry with Indigenous and practical knowledge.",
+        detail: "Science and Indigenous knowledge answer different questions, and each can sharpen the other. We connect researchers in ecology, economics, finance and other fields with knowledge holders and practitioners, on terms that respect consent and credit. Researchers can also help develop our frameworks, such as the Wisdom Age Index, and test whether our work achieves what it sets out to do.",
+      },
+      {
+        title: "NGOs",
+        text: "To implement, scale and learn from what works on the ground.",
+        detail: "Non-governmental organisations often bring the local presence, technical skill and long relationships that projects depend on. We work with them as delivery partners and as sources of learning, connecting their experience with funders, investors and Indigenous leaders across the Alliance. Where an approach works, we look for ways to share it and support it in more places.",
+      },
+      {
+        title: "Universities",
+        text: "To develop research, teaching and leadership programmes together.",
+        detail: "Universities train the next generation of leaders, investors and policymakers, and shape what counts as knowledge. We work with them to bring systems thinking, ecology and Indigenous perspectives into teaching and research, and to co-design leadership programmes with academic depth. For students and faculty, partnership opens a route to the practitioners, Elders and communities of the Alliance.",
+      },
+      {
+        title: "Entrepreneurs",
+        text: "To grow ventures that restore ecosystems and strengthen communities.",
+        detail: "Founders can turn new ideas about regeneration into working businesses faster than most institutions. We connect entrepreneurs with mentors, investors and community partners in the Alliance, and with the thinking of the Path of Wisdom. Our focus is ventures whose success depends on healthy land, water and communities, including young founders connected to our African hub.",
+      },
+      {
+        title: "Global institutions",
+        text: "To bring new perspectives into international agendas on climate, nature and finance.",
+        detail: "Multilateral institutions set agendas that shape national policy and global flows of capital. From our offices in New York and Kenya, both close to major international institutions, we work to bring Indigenous leaders, African voices and long-term thinking into those conversations. We offer perspectives that are often missing, and a network that can help turn commitments into practice.",
+      },
     ],
   },
   circles: {
